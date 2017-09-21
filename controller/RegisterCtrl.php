@@ -1,18 +1,13 @@
 <?php
 
-require_once(__DIR__ . '/../model/User.php');
-
 class RegisterCtrl {
 
-	/**
-	 * Check password match
-	 *
-	 * Should be called after a register attempt has been made
-	 *
-	 * @return Boolean
-	 */
-	private function checkPasswordMatch() {
-		return $_POST['RegisterView::Password'] == $_POST['RegisterView::RepeatPassword'];
+	public function __construct() {
+		if (!empty($_POST)) {
+			$this->checkPasswordMatch();
+			$this->checkUsernameInput();
+			$this->checkPasswordInput();
+		}
 	}
 
 	/**
@@ -20,19 +15,34 @@ class RegisterCtrl {
 	 *
 	 * Should be called after a register attempt has successfully been made
 	 *
-	 * @return Void
+	 * @return void
 	 */
-	public function addNewUser($newUser) {
-		if ($this->checkPasswordMatch()) {
-			$newUser->saveUser($_POST['RegisterView::UserName'], $_POST['RegisterView::Password']);
-		}
+	public function addNewUser(User $userDetails) {
+		$userDetails->saveUser($_POST['RegisterView::UserName'], $_POST['RegisterView::Password']);
 	}
 
 	/**
-	 * 	public function addNewUser($newUser) {
-	 *		if ($this->checkPasswordMatch()) {
-	 *			$newUser->saveUser($name, $password);
-	 *		}
-	 *	}
+	 * Check password match
+	 *
+	 * Should be called after a register attempt has been made
+	 *
+	 * @return boolean
 	 */
+	private function checkPasswordMatch() {
+		if ($_POST['RegisterView::Password'] != $_POST['RegisterView::PasswordRepeat']) {
+			$_SESSION["errorLog"][] = "Passwords do not match.";
+		}
+	}
+
+	private function checkUsernameInput() {
+		if (strlen($_POST['RegisterView::UserName']) < 3) {
+			$_SESSION["errorLog"][] = "Username has too few characters, at least 3 characters.";
+		}
+	}
+
+	private function checkPasswordInput() {
+		if (strlen($_POST['RegisterView::Password']) < 6) {
+			$_SESSION["errorLog"][] = "Password has too few characters, at least 6 characters.";
+		}
+	}
 }
