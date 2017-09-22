@@ -18,11 +18,17 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response() {
-		$errorMessage = '';
+		$message = $this->setMessage() ?: '';
 
-		$response = $this->generateLoginFormHTML($errorMessage);
+		$response = $this->generateLoginFormHTML($message);
 		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;
+	}
+
+	private function setMessage() {
+		if(isset($_GET[self::$messageId])) {
+			return $_GET[self::$messageId];
+		}
 	}
 
 	/**

@@ -16,19 +16,5 @@ class RouterCtrl {
 		} else if (!empty($_POST['LoginView::Login'])) {
 			$lc->loginUser($usr);
 		}
-		
-		$this->exceptionHandler();
-	}
-
-	public function exceptionHandler() {
-		$errorLog = '';
-
-		if (!empty($_SESSION['errorLog'])) {
-			foreach ($_SESSION['errorLog'] as $exception) {
-					$errorLog .= $exception . '<br>';
-			}
-
-			throw new \Exception($errorLog);
-		}
 	}
 }

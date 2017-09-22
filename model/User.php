@@ -63,6 +63,13 @@ class User {
     }
   }
 
+  public function userExists($username) {
+    $stmt = $this->dbConnect->prepare('SELECT * FROM Users WHERE username=:name');
+    $stmt->bindParam(':name', $username);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
+  }
+
   /**
 	 * Hash user password
 	 *

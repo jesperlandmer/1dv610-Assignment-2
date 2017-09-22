@@ -2,8 +2,7 @@
 
 // START SESSION
 session_start();
-$_SESSION = array();
-$_SESSION["errorLog"] = array();
+ob_start();
 
 //INCLUDE THE VIEW FILES NEEDED...
 require_once('view/LoginView.php');
@@ -31,6 +30,8 @@ try {
   $dtv = new DateTimeView();
   $lv = new LayoutView();
 
+  $lv->render(false, $v, $rv, $dtv);  
+
   //CREATE OBJECTS OF THE CONTROLLERS
   $usr = new User();
   $rc = new RegisterCtrl();
@@ -38,10 +39,8 @@ try {
   $roc = new RouterCtrl();
 
   $roc->route($usr, $rc, $lc, $db);
-
+  
 } catch (Exception $e) {
 
-  $_SESSION["errorMessage"] = $e->getMessage();
+  echo $e->getMessage();
 }
-
-$lv->render(false, $v, $rv, $dtv);

@@ -18,16 +18,16 @@ class RegisterView {
 	 * @return  void BUT writes to standard output!
 	 */
 	public function response() {
-		$errorMessage = $this->outputError();
+		$message = $this->setMessage() ?: '';
 
-		$response = $this->generateRegisterFormHTML($errorMessage);
+		$response = $this->generateRegisterFormHTML($message);
 		return $response;
 	}
 
-	public function outputError() {
-		if(isset($_SESSION['errorMessage'])) {
-			return $_SESSION['errorMessage'];
-		} else {return '';}
+	private function setMessage() {
+		if(isset($_GET[self::$messageId])) {
+			return $_GET[self::$messageId];
+		}
 	}
 
 	/**
