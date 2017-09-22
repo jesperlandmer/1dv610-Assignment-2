@@ -13,7 +13,7 @@ class LoginCtrl {
 	public function findUserInDb() {
 
 		$this->user->loginUser($_POST['LoginView::UserName'], $_POST['LoginView::Password']);
-		header("Location:index.php?LoginView::Message=Successful!");
+		header("Location:index.php?LoginView::Message=Welcome");
 	}
 
 	private function validator() {
