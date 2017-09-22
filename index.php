@@ -5,7 +5,7 @@ session_start();
 ob_start();
 
 // SET TIME ZONE
-date_default_timezone_set('Sweden/Stockholm');
+date_default_timezone_set('Europe/Stockholm');
 
 //INCLUDE THE VIEW FILES NEEDED...
 require_once('view/LoginView.php');
