@@ -28,12 +28,12 @@ class User {
 	 *
 	 * @return void
 	 */
-  public function saveUser($name, $password) {
-    $this->prepareUserSaveStatement();
+  public function saveUser($username, $password) {
+    $this->saveUserStatement();
 
     try {
-      $this->executeUserSaveStatement(array(
-        'username' => $name,
+      $this->executeSaveUserStatement(array(
+        'username' => $username,
         'password' => $this->hash($password)
       ));
     } catch(PDOException $e) {
@@ -48,13 +48,19 @@ class User {
    *
    * @return void
    */
-  public function loginUser($name, $password) {
-    $this->prepareUserLookUpStatement();
+  public function loginUser($username, $password) {
 
-    $dbExecute = $this->executeUserSaveStatement(array(
-      'username' => $name
-    ));
-    echo $this->dbConnect.fetchAll();
+    $stmt = $this->dbConnect->prepare('SELECT * FROM Users WHERE username=:name');
+    $stmt->bindParam(':name', $username);
+    $stmt->execute();
+
+    if (password_verify($password, $stmt->fetch()['password'])){
+      $_SESSION['LoginView::CookieName'] = $username;
+      $_SESSION['LoginView::CookiePassword'] = $password;
+      echo 'exists!';
+    } else {
+      $_SESSION["errorLog"][] = 'Wrong name or password';
+    }
   }
 
   /**
@@ -75,8 +81,8 @@ class User {
 	 *
 	 * @return void
 	 */
-  private function prepareUserSaveStatement() {
-    $this->statement = $this->dbConnect->prepare("INSERT INTO user(username, password)
+  private function saveUserStatement() {
+    $this->statement = $this->dbConnect->prepare("INSERT INTO Users(username, password)
         VALUES(:username, :password)");
   }
 
@@ -87,8 +93,8 @@ class User {
    *
    * @return void
    */
-  private function prepareUserLookUpStatement() {
-    $this->statement = $this->dbConnect->prepare("SELECT * FROM `user` WHERE 'username'=:username");
+  private function lookUpUserStatement() {
+    $this->statement = $this->dbConnect->prepare("SELECT username FROM users WHERE username = :name");
   }
 
   /**
@@ -98,7 +104,13 @@ class User {
 	 *
 	 * @return void
 	 */
-  private function executeUserSaveStatement(array $userData) {
+  private function executeSaveUserStatement(array $userData) {
+    $this->statement->execute($userData);
+  }
+
+  private function executeLookUpUserStatement(array $userData) {
     $this->statement->execute($userData);
   }
 }
+
+?>

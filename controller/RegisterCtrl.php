@@ -3,7 +3,7 @@
 class RegisterCtrl {
 
 	public function __construct() {
-		if (!empty($_POST)) {
+		if (!empty($_POST['RegisterView::Register'])) {
 			$this->checkPasswordMatch();
 			$this->checkUsernameInput();
 			$this->checkPasswordInput();

@@ -2,8 +2,7 @@
 
 // START SESSION
 session_start();
-unset($_SESSION["errorLog"]);
-unset($_SESSION["errorMessage"]);
+$_SESSION = array();
 $_SESSION["errorLog"] = array();
 
 //INCLUDE THE VIEW FILES NEEDED...
