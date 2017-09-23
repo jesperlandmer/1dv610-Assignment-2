@@ -22,7 +22,7 @@ class RegisterCtrl {
 	private function saveUserToDb() {
 		if (empty($this->errorLog)) {
 			$this->user->saveUser($_POST['RegisterView::UserName'], $_POST['RegisterView::Password']);
-			header("Location:index.php?LoginView::Message=Registered new user.");
+			header("Location:/index.php?LoginView::Message=Registered new user.");
 		} else {
 			header("Location:" . $_SERVER['PHP_SELF'] . "?register&RegisterView::Message=" . $this->errorMessage);
 		}

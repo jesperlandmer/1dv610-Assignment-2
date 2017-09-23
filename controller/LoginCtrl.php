@@ -13,7 +13,7 @@ class LoginCtrl {
 	public function findUserInDb() {
 
 		$this->user->loginUser($_POST['LoginView::UserName'], $_POST['LoginView::Password']);
-		header("Location:index.php?LoginView::Message=Welcome");
+		header("Location:/index.php?LoginView::Message=Welcome");
 	}
 
 	private function validator() {
@@ -21,7 +21,7 @@ class LoginCtrl {
 			header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Username is missing");
 		} else if ($this->checkPasswordInput()) {
 			header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Password is missing");
-		} else if (!$this->checkUsernameExists()) {
+		} else if (!$this->checkUserExists()) {
 			header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Wrong name or password");
 		}
 	}
@@ -34,7 +34,7 @@ class LoginCtrl {
 		return strlen($_POST['LoginView::Password']) < 6;
 	}
 
-	private function checkUsernameExists() {
+	private function checkUserExists() {
 		return $this->user->userExists($_POST['LoginView::UserName']);
 	}
 }

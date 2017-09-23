@@ -63,6 +63,12 @@ class User {
     }
   }
 
+  public function find(array $data) {
+    $stmt = $this->dbConnect->prepare('SELECT * FROM Users WHERE username=:username');
+    $stmt->execute($data);
+    return password_verify($password, $stmt->fetch()['password']);
+  }
+
   public function userExists($username) {
     $stmt = $this->dbConnect->prepare('SELECT * FROM Users WHERE username=:name');
     $stmt->bindParam(':name', $username);
