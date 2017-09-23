@@ -1,15 +1,23 @@
 <?php
 
 //INCLUDE THE LIBRARY FILES NEEDED...
-require_once(__DIR__ . '/../libs/Connection.php');
+require_once(__DIR__ . '/../libs/DatabaseHelper.php');
 
 class User {
 
-  private $dbConnect;
-  private $statement;
+  private $dbHelper;
+  private $userData;
+  private $errorMessage;
+  private $errorMessageType = array(
+    "userLength" => "Username has too few characters, at least 3 characters.",
+    "passLength" => "Password has too few characters, at least 6 characters.",
+    "passMatch" => "Passwords do not match.",
+    "userExists" => "User exists, pick another username.",
+    "noUserFound" => "Wrong name or password"
+);
 
   /**
-	 * Set DB Connection Variable
+	 * Fetch Database Helper Functions
 	 *
 	 * Should be called after a new instance of User
 	 *
@@ -17,8 +25,7 @@ class User {
 	 */
   public function __construct() {
 
-    $db = new Connection();
-    $this->dbConnect = $db->getDBConnection();
+    $this->dbHelper = new DatabaseHelper();
   }
 
   /**
@@ -28,102 +35,72 @@ class User {
 	 *
 	 * @return void
 	 */
-  public function saveUser($username, $password) {
-    $this->saveUserStatement();
+  public function saveUser($username, $password, $passwordRepeat) {
 
-    try {
-      $this->executeSaveUserStatement(array(
-        'username' => $username,
-        'password' => $this->hash($password)
-      ));
-    } catch(PDOException $e) {
-      $_SESSION["errorLog"][] = "User exists, pick another username.";
-    }
+    $this->saveValidator($username, $password, $passwordRepeat);
+    $this->userData = $this->dbHelper->saveData(array(
+      'username' => $username,
+      'password' => $this->hash($password)
+    ));
+
+    return true;
   }
 
-  /**
-   * Find user data from db
-   *
-   * Should be called after a login attempt
-   *
-   * @return void
-   */
-  public function loginUser($username, $password) {
+  public function findUser($username, $password) {
 
-    $stmt = $this->dbConnect->prepare('SELECT * FROM Users WHERE username=:name');
-    $stmt->bindParam(':name', $username);
-    $stmt->execute();
+    $this->userData = $this->dbHelper->findData(array(
+      'username' => $username
+    ));
 
-    if (password_verify($password, $stmt->fetch()['password'])){
-      $_SESSION['LoginView::CookieName'] = $username;
-      $_SESSION['LoginView::CookiePassword'] = $password;
-      echo 'exists!';
+    if (password_verify($password, $this->userData->fetch()['password'])){
+      setcookie($username, $this->hash($password), time() + (86400 * 30), "/");
+      return true;
     } else {
-      $_SESSION["errorLog"][] = 'Wrong name or password';
+      header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Wrong name or password");
     }
   }
 
-  public function find(array $data) {
-    $stmt = $this->dbConnect->prepare('SELECT * FROM Users WHERE username=:username');
-    $stmt->execute($data);
-    return password_verify($password, $stmt->fetch()['password']);
+  private function saveValidator($username, $password, $passwordRepeat) {
+    $this->getUsernameMinLength($username);
+    $this->getPasswordMinLength($password);
+    $this->getUsernameExists($username);
+    $this->getPasswordMatch($password, $passwordRepeat);
+    if (isset($this->errorMessage)) {
+      header("Location:" . $_SERVER['PHP_SELF'] . "?register&RegisterView::Message=" . $this->errorMessage);
+    }
   }
 
-  public function userExists($username) {
-    $stmt = $this->dbConnect->prepare('SELECT * FROM Users WHERE username=:name');
-    $stmt->bindParam(':name', $username);
-    $stmt->execute();
-    return $stmt->rowCount() > 0;
-  }
+  private function addError(String $message) {
+		$this->errorMessage .= $message . '<br>';
+	}
 
-  /**
-	 * Hash user password
-	 *
-	 * Should be called when saving user data to DB
-	 *
-	 * @return string
-	 */
   private function hash($passToHash) {
     return password_hash("$passToHash", PASSWORD_BCRYPT, ["cost" => 8]);
   }
 
-  /**
-	 * Prepare statement to save user
-	 *
-	 * Should be called after a register attempt
-	 *
-	 * @return void
-	 */
-  private function saveUserStatement() {
-    $this->statement = $this->dbConnect->prepare("INSERT INTO Users(username, password)
-        VALUES(:username, :password)");
-  }
+	private function getUsernameMinLength($username) {
+    if (strlen($username) < 3) {
+      $this->addError($this->errorMessageType['userLength']);
+    }
+	}
 
-  /**
-   * Prepare statement to look up user
-   *
-   * Should be called after a login attempt
-   *
-   * @return void
-   */
-  private function lookUpUserStatement() {
-    $this->statement = $this->dbConnect->prepare("SELECT username FROM users WHERE username = :name");
-  }
+	private function getPasswordMinLength($password) {
+    if (strlen($username) < 6) {
+      $this->addError($this->errorMessageType['passLength']);
+    }
+	}
 
-  /**
-	 * Execute statement to save user
-	 *
-	 * Should be called after a register attempt
-	 *
-	 * @return void
-	 */
-  private function executeSaveUserStatement(array $userData) {
-    $this->statement->execute($userData);
+	private function getUsernameExists($username) {
+		if (!empty($_POST['RegisterView::Register'])) {
+			$this->addError($this->errorMessageType['userExists']);
+		}
   }
-
-  private function executeLookUpUserStatement(array $userData) {
-    $this->statement->execute($userData);
-  }
+  
+  private function getPasswordMatch($password, $passwordRepeat) {
+		if ($password != $passwordRepeat) {
+			$this->addError($this->errorMessageType['passMatch']);
+		}
+	}
 }
 
 ?>

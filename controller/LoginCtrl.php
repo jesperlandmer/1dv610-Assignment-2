@@ -2,39 +2,27 @@
 
 class LoginCtrl {
 
-	private $user;
-
 	public function loginUser(User $user) {
-		$this->user = $user;
-		$this->validator();
-		$this->findUserInDb();
+		$this->getUsernameInput();
+		$this->getPasswordInput();
+		$this->getUser($user);
 	}
 
-	public function findUserInDb() {
-
-		$this->user->loginUser($_POST['LoginView::UserName'], $_POST['LoginView::Password']);
-		header("Location:/index.php?LoginView::Message=Welcome");
-	}
-
-	private function validator() {
-		if ($this->checkUsernameInput()) {
-			header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Username is missing");
-		} else if ($this->checkPasswordInput()) {
-			header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Password is missing");
-		} else if (!$this->checkUserExists()) {
-			header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Wrong name or password");
+	private function getUser($user) {
+		if ($user->findUser($_POST['LoginView::UserName'], $_POST['LoginView::Password'])) {
+			header("Location:/index.php?LoginView::Message=Welcome");
 		}
 	}
 
-	private function checkUsernameInput() {
-		return strlen($_POST['LoginView::UserName']) < 3;
+	private function getUsernameInput() {
+		if (strlen($_POST['LoginView::UserName']) <= 0) {
+			header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Username is missing");
+		}
 	}
 
-	private function checkPasswordInput() {
-		return strlen($_POST['LoginView::Password']) < 6;
-	}
-
-	private function checkUserExists() {
-		return $this->user->userExists($_POST['LoginView::UserName']);
+	private function getPasswordInput() {
+		if (strlen($_POST['LoginView::Password']) <= 0) {
+			header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Password is missing");
+		}
 	}
 }

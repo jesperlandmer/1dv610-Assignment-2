@@ -1,7 +1,6 @@
 <?php
 
-// START SESSION
-session_start();
+// TURN ON OUTPUT BUFFERING
 ob_start();
 
 // SET TIME ZONE
