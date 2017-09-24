@@ -4,9 +4,9 @@ class LoginCtrl {
 
 	public function loginUser(User $user) {
 		if ($this->getUsernameInput()) {
-			header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Username is missing");
+			$_SESSION['LoginView::Message'] = 'Username is missing';
 		} else if ($this->getPasswordInput()) {
-			header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Password is missing");
+			$_SESSION['LoginView::Message'] = 'Password is missing';
 		} else {
 			$this->getUser($user);
 		}
@@ -14,7 +14,7 @@ class LoginCtrl {
 
 	private function getUser($user) {
 		if ($user->findUser($_POST['LoginView::UserName'], $_POST['LoginView::Password'])) {
-			header("Location:/index.php?LoginView::Message=Welcome");
+			$_SESSION['LoginView::Message'] = 'Welcome';
 		}
 	}
 

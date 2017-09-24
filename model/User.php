@@ -53,7 +53,6 @@ class User {
     ));
 
     if (password_verify($password, $this->userData->fetch()['password'])){
-      setcookie($username, $this->hash($password), time() + (86400 * 30), "/");
       return true;
     } else {
       header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Wrong name or password");

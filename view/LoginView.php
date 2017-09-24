@@ -26,8 +26,8 @@ class LoginView {
 	}
 
 	private function setMessage() {
-		if(isset($_GET[self::$messageId])) {
-			return $_GET[self::$messageId];
+		if(isset($_SESSION['LoginView::Message'])) {
+			return $_SESSION['LoginView::Message'];
 		}
 	}
 

@@ -1,5 +1,8 @@
 <?php
 
+session_start();
+unset($_SESSION['LoginView::Message']);
+
 // TURN ON OUTPUT BUFFERING
 ob_start();
 
