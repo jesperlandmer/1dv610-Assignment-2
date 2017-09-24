@@ -25,8 +25,8 @@ class RegisterView {
 	}
 
 	private function setMessage() {
-		if(isset($_GET[self::$messageId])) {
-			return $_GET[self::$messageId];
+		if(isset($_SESSION['RegisterView::Message'])) {
+			return $_SESSION['RegisterView::Message'];
 		}
 	}
 

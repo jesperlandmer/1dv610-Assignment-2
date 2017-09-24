@@ -2,6 +2,7 @@
 
 session_start();
 unset($_SESSION['LoginView::Message']);
+unset($_SESSION['RegisterView::Message']);
 
 // TURN ON OUTPUT BUFFERING
 ob_start();
@@ -35,8 +36,6 @@ try {
   $dtv = new DateTimeView();
   $lv = new LayoutView();
 
-  $lv->render(false, $v, $rv, $dtv);  
-
   //CREATE OBJECTS OF THE CONTROLLERS
   $usr = new User();
   $rc = new RegisterCtrl();
@@ -44,6 +43,7 @@ try {
   $roc = new RouterCtrl();
 
   $roc->route($usr, $rc, $lc, $db);
+  $lv->render(false, $v, $rv, $dtv);  
   
 } catch (Exception $e) {
 

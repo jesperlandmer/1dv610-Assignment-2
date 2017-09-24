@@ -7,7 +7,6 @@ class User {
 
   private $dbHelper;
   private $userData;
-  private $errorMessage;
   private $errorMessageType = array(
     "userLength" => "Username has too few characters, at least 3 characters.",
     "passLength" => "Password has too few characters, at least 6 characters.",
@@ -38,12 +37,14 @@ class User {
   public function saveUser($username, $password, $passwordRepeat) {
 
     $this->saveValidator($username, $password, $passwordRepeat);
-    $this->userData = $this->dbHelper->saveData(array(
-      'username' => $username,
-      'password' => $this->hash($password)
-    ));
 
-    return true;
+    if (!isset($_SESSION['RegisterView::Message'])) {
+      $this->userData = $this->dbHelper->saveData(array(
+        'username' => $username,
+        'password' => $this->hash($password)
+      ));
+      return true;
+    }
   }
 
   public function findUser($username, $password) {
@@ -55,7 +56,7 @@ class User {
     if (password_verify($password, $this->userData->fetch()['password'])){
       return true;
     } else {
-      header("Location:" . $_SERVER['PHP_SELF'] . "?LoginView::Message=Wrong name or password");
+      $_SESSION['RegisterView::Message'] = 'Wrong name or password';
     }
   }
 
@@ -64,13 +65,14 @@ class User {
     $this->getPasswordMinLength($password);
     $this->getUsernameExists($username);
     $this->getPasswordMatch($password, $passwordRepeat);
-    if (isset($this->errorMessage)) {
-      header("Location:" . $_SERVER['PHP_SELF'] . "?register&RegisterView::Message=" . $this->errorMessage);
-    }
   }
 
   private function addError(String $message) {
-		$this->errorMessage .= $message . '<br>';
+    if (isset($_SESSION['RegisterView::Message'])) {
+      $_SESSION['RegisterView::Message'] .= $message . '<br>';
+    } else {
+      $_SESSION['RegisterView::Message'] = $message . '<br>';
+    }
 	}
 
   private function hash($passToHash) {
@@ -84,7 +86,7 @@ class User {
 	}
 
 	private function getPasswordMinLength($password) {
-    if (strlen($username) < 6) {
+    if (strlen($password) < 6) {
       $this->addError($this->errorMessageType['passLength']);
     }
 	}

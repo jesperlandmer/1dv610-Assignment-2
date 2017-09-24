@@ -13,6 +13,7 @@ class RegisterCtrl {
 
 		if ($this->saveUserSuccessful($user)) {
 			header("Location:/index.php?LoginView::Message=Registered new user.");
+			exit();
 		}
 	}
 
