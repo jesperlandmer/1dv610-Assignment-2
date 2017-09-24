@@ -7,7 +7,7 @@ class User {
 
   private $dbHelper;
   private $userData;
-  private $errorMessageType = array(
+  private $messageType = array(
     "userLength" => "Username has too few characters, at least 3 characters.",
     "passLength" => "Password has too few characters, at least 6 characters.",
     "passMatch" => "Passwords do not match.",
@@ -56,7 +56,7 @@ class User {
     if (password_verify($password, $this->userData->fetch()['password'])){
       return true;
     } else {
-      $_SESSION['RegisterView::Message'] = 'Wrong name or password';
+      return false;
     }
   }
 
@@ -67,7 +67,7 @@ class User {
     $this->getPasswordMatch($password, $passwordRepeat);
   }
 
-  private function addError(String $message) {
+  private function addMessage(String $message) {
     if (isset($_SESSION['RegisterView::Message'])) {
       $_SESSION['RegisterView::Message'] .= $message . '<br>';
     } else {
@@ -81,25 +81,25 @@ class User {
 
 	private function getUsernameMinLength($username) {
     if (strlen($username) < 3) {
-      $this->addError($this->errorMessageType['userLength']);
+      $this->addMessage($this->messageType['userLength']);
     }
 	}
 
 	private function getPasswordMinLength($password) {
     if (strlen($password) < 6) {
-      $this->addError($this->errorMessageType['passLength']);
+      $this->addMessage($this->messageType['passLength']);
     }
 	}
 
 	private function getUsernameExists($username) {
 		if (!empty($_POST['RegisterView::Register'])) {
-			$this->addError($this->errorMessageType['userExists']);
+			$this->addMessage($this->messageType['userExists']);
 		}
   }
   
   private function getPasswordMatch($password, $passwordRepeat) {
 		if ($password != $passwordRepeat) {
-			$this->addError($this->errorMessageType['passMatch']);
+			$this->addMessage($this->messageType['passMatch']);
 		}
 	}
 }
