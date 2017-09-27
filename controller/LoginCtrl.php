@@ -36,15 +36,15 @@ class LoginCtrl {
 		setcookie('LoginView::CookiePassword', '', time() - 3600);
 		$params = session_get_cookie_params();
 		setcookie('LoginView::Message', 'Bye bye!', time() + (86400 * 30), "/");
-		header('Location: ' . $_SERVER['PHP_SELF']);
+		header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
 	}
 
 	private function getUser() {
 		if ($this->getUserFound($_REQUEST['LoginView::UserName'], $_REQUEST['LoginView::Password'])) {
 			$this->setCookie('LoginView::CookieName', $_REQUEST['LoginView::UserName']);
 			$this->setCookie('LoginView::CookiePassword', $_REQUEST['LoginView::Password']);
-			setcookie('LoginView::Message', 'Welcome!', time() + (86400 * 30), "/");
-			header('Location: ' . $_SERVER['PHP_SELF']);
+			setcookie('LoginView::Message', $this->messageType['welcome'], time() + (86400 * 30), "/");
+			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
 		} else {
 			$this->addMessage($this->messageType['noUserFound']);
 		}
