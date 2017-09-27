@@ -38,8 +38,6 @@ class User {
 
     $this->saveValidator($username, $password, $passwordRepeat);
 
-    echo $_SESSION['RegisterView::Message'];
-
     if (!isset($_SESSION['RegisterView::Message'])) {
       $this->userData = $this->dbHelper->saveData(array(
         'username' => $username,
