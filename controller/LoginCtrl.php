@@ -25,7 +25,7 @@ class LoginCtrl {
 
 	public function isLoggedIn(User $user) {
 		$this->user = $user;
-		
+
 		if ($this->cookieIsSet()) {
 			echo $this->getUserFound($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
 			return true;
@@ -55,7 +55,7 @@ class LoginCtrl {
 	}
 
 	private function cookieIsSet() {
-		return isset($_REQUEST['LoginView::CookieName']) && isset($_REQUEST['LoginView::CookiePassword']);
+		return isset($_COOKIE['LoginView::CookieName']) && isset($_COOKIE['LoginView::CookiePassword']);
 	}
 
 	private function getUserFound($username, $password) {
