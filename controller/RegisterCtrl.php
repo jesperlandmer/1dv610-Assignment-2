@@ -18,8 +18,6 @@ class RegisterCtrl extends LoginCtrl {
 		if ($this->saveUserSuccessful($user)) {
 			$_SESSION['LoginView::Message'] = 'Registered new user.';
 			header('Location: ' . $_SERVER['PHP_SELF']);
-		} else {
-			header('Location: ' . $_SERVER['PHP_SELF'] . '?register');
 		}
 	}
 
