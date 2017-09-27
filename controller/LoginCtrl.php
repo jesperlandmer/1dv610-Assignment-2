@@ -20,8 +20,6 @@ class LoginCtrl {
 			$this->addMessage($this->messageType['passLength']);
 		} else {
 			$this->getUser($user);
-			setcookie('LoginView::Message', 'Welcome!', time() + (86400 * 30), "/");
-			header('Location: index.php');
 		}
 	}
 
@@ -29,9 +27,7 @@ class LoginCtrl {
 		$this->user = $user;
 
 		if ($this->cookieIsSet()) {
-			return $this->getUserFound($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
-		} else {
-			return false;
+			return $this->getUserFound($_REQUEST['LoginView::CookieName'], $_REQUEST['LoginView::CookiePassword']);
 		}
 	}
 
@@ -48,6 +44,8 @@ class LoginCtrl {
 		if ($this->getUserFound($_REQUEST['LoginView::UserName'], $_REQUEST['LoginView::Password'])) {
 			$this->setCookie('LoginView::CookieName', $_REQUEST['LoginView::UserName']);
 			$this->setCookie('LoginView::CookiePassword', $_REQUEST['LoginView::Password']);
+			setcookie('LoginView::Message', 'Welcome!', time() + (86400 * 30), "/");
+			header('Location: index.php');
 		} else {
 			$this->addMessage($this->messageType['noUserFound']);
 		}
