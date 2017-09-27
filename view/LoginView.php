@@ -22,11 +22,6 @@ class LoginView {
 
 		if($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML($message);
-			if ($_SESSION['LoginView::KeepMeLoggedIn']) {
-				unset($_SESSION['LoginView::KeepMeLoggedIn']);
-				setcookie('LoginView::CookieName', '', time() - 3600);
-				setcookie('LoginView::CookiePassword', '', time() - 3600);
-			}
 		}
 		else {
 			$response = $this->generateLoginFormHTML($message);
