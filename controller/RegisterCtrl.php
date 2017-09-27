@@ -1,6 +1,8 @@
 <?php
 
-class RegisterCtrl {
+require_once("LoginCtrl.php");
+
+class RegisterCtrl extends LoginCtrl {
 
 	/**
 	 * Save new user
@@ -12,8 +14,8 @@ class RegisterCtrl {
 	public function addNewUser(User $user) {
 
 		if ($this->saveUserSuccessful($user)) {
-			header("Location:/index.php?LoginView::Message=Registered new user.");
-			exit();
+			$_SESSION['LoginView::Message'] = 'Registered new user.';
+			header('Location: index.php');
 		}
 	}
 

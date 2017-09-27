@@ -1,8 +1,6 @@
 <?php
 
 session_start();
-unset($_SESSION['LoginView::Message']);
-unset($_SESSION['RegisterView::Message']);
 
 // TURN ON OUTPUT BUFFERING
 ob_start();
@@ -27,9 +25,6 @@ ini_set('display_errors', 'On');
 
 try {
 
-  //CREATE OBJECTS OF THE DATABASE
-  $db = new Connection();
-
   //CREATE OBJECTS OF THE VIEWS
   $v = new LoginView();
   $rv = new RegisterView();
@@ -42,8 +37,10 @@ try {
   $lc = new LoginCtrl();
   $roc = new RouterCtrl();
 
-  $roc->route($usr, $rc, $lc, $db);
-  $lv->render(false, $v, $rv, $dtv);  
+  $roc->route($usr, $rc, $lc);
+  $lv->render($lc->isLoggedIn($usr), $v, $rv, $dtv);
+
+  unset($_SESSION['RegisterView::Message']);
   
 } catch (Exception $e) {
 

@@ -7,49 +7,72 @@ class LoginCtrl {
 		"userLength" => "Username is missing",
 		"passLength" => "Password is missing",
 		"noUserFound" => "Wrong name or password",
-		"welcome" => "Welcome"
+		"welcome" => "Welcome",
+		"logOut" => "Bye bye!"
 	);
 
 	public function loginUser(User $user) {
 		$this->user = $user;
 
-		if ($this->getUsernameInput()) {
+		if ($this->getUsernameInput($_POST['LoginView::UserName'])) {
 			$this->addMessage($this->messageType['userLength']);
-		} else if ($this->getPasswordInput()) {
+		} else if ($this->getPasswordInput($_POST['LoginView::Password'])) {
 			$this->addMessage($this->messageType['passLength']);
 		} else {
 			$this->getUser($user);
 		}
 	}
 
+	public function isLoggedIn(User $user) {
+		$this->user = $user;
+
+		if ($this->cookieIsSet()) {
+			return $this->getUserFound($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
+		}
+	}
+
+	public function logoutUser() {
+		if ($this->cookieIsSet()) {
+			setcookie('LoginView::CookieName', '', time() - 3600);
+			setcookie('LoginView::CookiePassword', '', time() - 3600);
+			$this->addMessage($this->messageType['logOut']);
+			header('Location: index.php');
+		}
+	}
+
 	private function getUser() {
-		if ($this->getUserFound()) {
-			$this->setCookie();
+		if ($this->getUserFound($_POST['LoginView::UserName'], $_POST['LoginView::Password'])) {
+			$this->setCookie('LoginView::CookieName', $_POST['LoginView::UserName']);
+			$this->setCookie('LoginView::CookiePassword', $_POST['LoginView::Password']);
 			$this->addMessage($this->messageType['welcome']);
 		} else {
 			$this->addMessage($this->messageType['noUserFound']);
 		}
 	}
 
-	private function setCookie() {
-		setcookie($_POST['LoginView::UserName'], $_POST['LoginView::Password'], time() + (86400 * 30), "/");
+	private function setCookie($cookieName, $cookieValue) {
+		setcookie($cookieName, $cookieValue, time() + (86400 * 30), "/");
 	}
 
-	private function getUserFound() {
-		return $this->user->findUser($_POST['LoginView::UserName'], $_POST['LoginView::Password']);
+	private function cookieIsSet() {
+		return isset($_COOKIE['LoginView::CookieName']) && isset($_COOKIE['LoginView::CookiePassword']);
 	}
 
-	private function getUsernameInput() {
-
-		return strlen($_POST['LoginView::UserName']) <= 0;
+	private function getUserFound($username, $password) {
+		return $this->user->findUser($username, $password);
 	}
 
-	private function getPasswordInput() {
+	private function getUsernameInput($username) {
+
+		return strlen($username) <= 0;
+	}
+
+	private function getPasswordInput($password) {
 		
-		return strlen($_POST['LoginView::Password']) <= 0;
+		return strlen($password) <= 0;
 	}
 
-	private function addMessage(String $message) {
+	protected function addMessage(String $message) {
 		if (isset($_SESSION['LoginView::Message'])) {
 		  $_SESSION['LoginView::Message'] .= $message . '<br>';
 		} else {

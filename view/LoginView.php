@@ -18,16 +18,28 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response() {
-		$message = $this->setMessage() ?: '';
+		$message = $this->setMessage('LoginView::Message') ?: '';
 
-		$response = $this->generateLoginFormHTML($message);
-		//$response .= $this->generateLogoutButtonHTML($message);
+		if($this->getCookieSet()){
+			$response = $this->generateLogoutButtonHTML($message);
+		}
+		else{
+			$response = $this->generateLoginFormHTML($message);
+		}
 		return $response;
 	}
 
-	private function setMessage() {
-		if(isset($_SESSION['LoginView::Message'])) {
-			return $_SESSION['LoginView::Message'];
+	private function getCookieSet() {
+		return isset($_COOKIE['LoginView::CookieName']);
+	}
+
+	protected function setMessage($view) {
+		$message = '';
+
+		if(isset($_SESSION[$view])) {
+			$message = $_SESSION[$view];
+			unset($_SESSION[$view]);
+			return $message;
 		}
 	}
 
@@ -58,7 +70,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />

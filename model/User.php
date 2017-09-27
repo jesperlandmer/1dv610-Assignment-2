@@ -13,7 +13,7 @@ class User {
     "passMatch" => "Passwords do not match.",
     "userExists" => "User exists, pick another username.",
     "noUserFound" => "Wrong name or password"
-);
+  );
 
   /**
 	 * Fetch Database Helper Functions
@@ -49,9 +49,7 @@ class User {
 
   public function findUser($username, $password) {
 
-    $this->userData = $this->dbHelper->findData(array(
-      'username' => $username
-    ));
+    $this->userData = $this->getUser($username);
 
     if (password_verify($password, $this->userData->fetch()['password'])){
       return true;
@@ -79,6 +77,12 @@ class User {
     return password_hash("$passToHash", PASSWORD_BCRYPT, ["cost" => 8]);
   }
 
+  private function getUser($username) {
+    return $this->dbHelper->findData(array(
+      'username' => $username
+    ));
+  }
+
 	private function getUsernameMinLength($username) {
     if (strlen($username) < 3) {
       $this->addMessage($this->messageType['userLength']);
@@ -92,7 +96,7 @@ class User {
 	}
 
 	private function getUsernameExists($username) {
-		if (!empty($_POST['RegisterView::Register'])) {
+		if ($this->getUser($username)->rowCount() > 0) {
 			$this->addMessage($this->messageType['userExists']);
 		}
   }

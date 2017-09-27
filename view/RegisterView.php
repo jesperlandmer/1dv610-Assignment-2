@@ -1,14 +1,12 @@
 <?php
 
-session_start();
+require_once('LoginView.php');
 
-class RegisterView {
+class RegisterView extends LoginView {
 	private static $register = 'RegisterView::Register';
 	private static $name = 'RegisterView::UserName';
 	private static $password = 'RegisterView::Password';
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
-	private static $cookieName = 'RegisterView::CookieName';
-	private static $cookiePassword = 'RegisterView::CookiePassword';
 	private static $messageId = 'RegisterView::Message';
 	/**
 	 * Create HTTP response
@@ -18,16 +16,10 @@ class RegisterView {
 	 * @return  void BUT writes to standard output!
 	 */
 	public function response() {
-		$message = $this->setMessage() ?: '';
+		$message = parent::setMessage('RegisterView::Message') ?: '';
 
 		$response = $this->generateRegisterFormHTML($message);
 		return $response;
-	}
-
-	private function setMessage() {
-		if(isset($_SESSION['RegisterView::Message'])) {
-			return $_SESSION['RegisterView::Message'];
-		}
 	}
 
 	/**
