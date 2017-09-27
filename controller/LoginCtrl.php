@@ -34,12 +34,8 @@ class LoginCtrl {
 
 	public function logoutUser() {
 		echo 'before: ' . var_dump($_COOKIE);
-		if ($this->cookieIsSet()) {
-			setcookie('LoginView::CookieName', FALSE, -1, '/');
-			setcookie('LoginView::CookiePassword', FALSE, -1, '/');
-			setcookie('LoginView::Message', 'Bye bye!', time() + (86400 * 30), "/");
-			header('Location: index.php');
-		}
+		setcookie('LoginView::CookieName', FALSE, -1, '/');
+		setcookie('LoginView::CookiePassword', FALSE, -1, '/');
 		echo 'after: ' . var_dump($_COOKIE);
 	}
 
