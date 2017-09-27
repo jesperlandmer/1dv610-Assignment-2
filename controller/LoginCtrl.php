@@ -25,6 +25,7 @@ class LoginCtrl {
 
 	public function isLoggedIn(User $user) {
 		$this->user = $user;
+		echo 'isLoggedIn: ' . var_dump($_COOKIE);
 
 		if ($this->cookieIsSet()) {
 			return $this->getUserFound($_REQUEST['LoginView::CookieName'], $_REQUEST['LoginView::CookiePassword']);
@@ -32,12 +33,14 @@ class LoginCtrl {
 	}
 
 	public function logoutUser() {
+		echo 'before: ' . var_dump($_COOKIE);
 		if ($this->cookieIsSet()) {
 			setcookie('LoginView::CookieName', FALSE, -1, '/');
 			setcookie('LoginView::CookiePassword', FALSE, -1, '/');
 			setcookie('LoginView::Message', 'Bye bye!', time() + (86400 * 30), "/");
 			header('Location: index.php');
 		}
+		echo 'after: ' . var_dump($_COOKIE);
 	}
 
 	private function getUser() {
