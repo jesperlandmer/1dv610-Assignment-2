@@ -40,8 +40,8 @@ class LoginView {
 			$message = $_SESSION[$view];
 			unset($_SESSION[$view]);
 			return $message;
-		} else if (isset($_REQUEST[$view])) {
-			$message = $_REQUEST[$view];
+		} else if (isset($_COOKIE[$view])) {
+			$message = $_COOKIE[$view];
 			setcookie($view, '', time() - 3600);
 			return $message;
 		}

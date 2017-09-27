@@ -27,8 +27,7 @@ class LoginCtrl {
 		$this->user = $user;
 
 		if ($this->cookieIsSet()) {
-			echo $this->getUserFound($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
-			return true;
+			return $this->getUserFound($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
 		}
 	}
 
