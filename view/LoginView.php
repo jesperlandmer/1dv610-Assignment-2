@@ -53,6 +53,7 @@ class LoginView {
 	* @return  void, BUT writes to standard output!
 	*/
 	private function generateLogoutButtonHTML($message) {
+		echo var_dump($_COOKIE);
 		return '
 			<form  method="post" >
 				<p id="' . self::$messageId . '">' . $message .'</p>
