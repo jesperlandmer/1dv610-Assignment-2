@@ -14,7 +14,7 @@ class LayoutView {
           ' . $this->renderIsLoggedIn($isLoggedIn) . '
 
           <div class="container">
-              ' . $this->renderFormResponse($v, $r) . '
+              ' . $this->renderFormResponse($isLoggedIn, $v, $r) . '
 
               ' . $dtv->show() . '
           </div>
@@ -31,11 +31,11 @@ class LayoutView {
     }
   }
 
-  private function renderFormResponse($v, $r) {
+  private function renderFormResponse($isLoggedIn, $v, $r) {
     if (isset($_GET["register"])) {
       return $r->response();
     } else {
-      return $v->response();
+      return $v->response($isLoggedIn);
     }
   }
 

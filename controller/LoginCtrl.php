@@ -34,6 +34,7 @@ class LoginCtrl {
 	public function logoutUser() {
 		setcookie('LoginView::CookieName', '', time() - 3600);
 		setcookie('LoginView::CookiePassword', '', time() - 3600);
+		$params = session_get_cookie_params();
 		setcookie('LoginView::Message', 'Bye bye!', time() + (86400 * 30), "/");
 		header('Location: index.php');
 	}
@@ -49,12 +50,12 @@ class LoginCtrl {
 		}
 	}
 
-	private function setCookie($cookieName, $cookieValue) {
+	protected function setCookie($cookieName, $cookieValue) {
 		setcookie($cookieName, $cookieValue, time() + (86400 * 30), "/");
 	}
 
 	private function cookieIsSet() {
-		return isset($_COOKIE['LoginView::CookieName']) && isset($_COOKIE['LoginView::CookiePassword']);
+		return (isset($_COOKIE['LoginView::CookieName']) && isset($_COOKIE['LoginView::CookiePassword']));
 	}
 
 	private function getUserFound($username, $password) {

@@ -17,20 +17,16 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response() {
+	public function response($isLoggedIn) {
 		$message = $this->setMessage('LoginView::Message') ?: '';
 
-		if($this->getCookieSet()) {
+		if($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML($message);
 		}
 		else {
 			$response = $this->generateLoginFormHTML($message);
 		}
 		return $response;
-	}
-
-	private function getCookieSet() {
-		return isset($_COOKIE['LoginView::CookieName']);
 	}
 
 	protected function setMessage($view) {
@@ -74,7 +70,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" /><br>
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -90,7 +86,12 @@ class LoginView {
 
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	private function getRequestUserName() {
-		//RETURN REQUEST VARIABLE: USERNAME
+		$username = '';
+		if (isset($_COOKIE[self::$cookieName])) {
+			$username = $_COOKIE[self::$cookieName];
+			setcookie(self::$cookieName, '', time() - 3600);
+			return $username;
+		}
 	}
 
 }
