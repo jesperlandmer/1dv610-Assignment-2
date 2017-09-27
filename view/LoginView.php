@@ -85,7 +85,7 @@ class LoginView {
 	}
 
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	protected function getRequestUserName() {
+	private function getRequestUserName() {
 		$username = '';
 		if (isset($_COOKIE[self::$cookieName])) {
 			$username = $_COOKIE[self::$cookieName];

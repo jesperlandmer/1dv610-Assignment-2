@@ -36,7 +36,7 @@ class RegisterView extends LoginView {
 					<p id="' . self::$registerMessageId . '">' . $message . '</p>
 			
 					<label for="' . self::$registerName . '">Username :</label>
-					<input type="text" size="20" name="' . self::$registerName . '" id="' . self::$registerName . '" value="' . parent::getRequestUserName() .'">
+					<input type="text" size="20" name="' . self::$registerName . '" id="' . self::$registerName . '" value="' . $this->getRequestUserName() .'">
 					<br>
 			
 					<label for="' . self::$registerPassword . '">Password  :</label>
@@ -52,6 +52,16 @@ class RegisterView extends LoginView {
 				</fieldset>
 			</form>
 		';
+	}
+
+	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
+	private function getRequestUserName() {
+		$username = '';
+		if (isset($_SESSION['registerUser'])) {
+			$username = $_SESSION['registerUser'];
+			unset($_SESSION['registerUser']);
+			return $username;
+		}
 	}
 }
 
