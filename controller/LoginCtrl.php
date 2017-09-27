@@ -45,6 +45,13 @@ class LoginCtrl {
 		if ($this->getUserFound($_REQUEST['LoginView::UserName'], $_REQUEST['LoginView::Password'])) {
 			$this->setCookie('LoginView::CookieName', $_REQUEST['LoginView::UserName']);
 			$this->setCookie('LoginView::CookiePassword', $_REQUEST['LoginView::Password']);
+
+			if (!isset($_REQUEST['LoginView::KeepMeLoggedIn'])) {
+				$_SESSION['LoginView::KeepMeLoggedIn'] = true;
+			} else {
+				$_SESSION['LoginView::KeepMeLoggedIn'] = false;
+			}
+
 			setcookie('LoginView::Message', $this->messageType['welcome'], time() + (86400 * 30), "/");
 			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
 		} else {
