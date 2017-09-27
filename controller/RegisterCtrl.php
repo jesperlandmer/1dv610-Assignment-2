@@ -1,8 +1,6 @@
 <?php
 
-require_once("LoginCtrl.php");
-
-class RegisterCtrl extends LoginCtrl {
+class RegisterCtrl {
 
 	/**
 	 * Save new user

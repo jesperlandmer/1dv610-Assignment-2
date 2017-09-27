@@ -20,6 +20,8 @@ class LoginCtrl {
 			$this->addMessage($this->messageType['passLength']);
 		} else {
 			$this->getUser($user);
+			setcookie('LoginView::Message', 'Welcome!', time() + (86400 * 30), "/");
+			header('Location: index.php');
 		}
 	}
 
@@ -28,6 +30,8 @@ class LoginCtrl {
 
 		if ($this->cookieIsSet()) {
 			return $this->getUserFound($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
+		} else {
+			return false;
 		}
 	}
 
@@ -35,7 +39,7 @@ class LoginCtrl {
 		if ($this->cookieIsSet()) {
 			setcookie('LoginView::CookieName', '', time() - 3600);
 			setcookie('LoginView::CookiePassword', '', time() - 3600);
-			$this->addMessage($this->messageType['logOut']);
+			setcookie('LoginView::Message', 'Bye bye!', time() + (86400 * 30), "/");
 			header('Location: index.php');
 		}
 	}
@@ -44,7 +48,6 @@ class LoginCtrl {
 		if ($this->getUserFound($_REQUEST['LoginView::UserName'], $_REQUEST['LoginView::Password'])) {
 			$this->setCookie('LoginView::CookieName', $_REQUEST['LoginView::UserName']);
 			$this->setCookie('LoginView::CookiePassword', $_REQUEST['LoginView::Password']);
-			$this->addMessage($this->messageType['welcome']);
 		} else {
 			$this->addMessage($this->messageType['noUserFound']);
 		}
@@ -55,7 +58,7 @@ class LoginCtrl {
 	}
 
 	private function cookieIsSet() {
-		return isset($_COOKIE['LoginView::CookieName']) && isset($_COOKIE['LoginView::CookiePassword']);
+		return isset($_REQUEST['LoginView::CookieName']) && isset($_REQUEST['LoginView::CookiePassword']);
 	}
 
 	private function getUserFound($username, $password) {

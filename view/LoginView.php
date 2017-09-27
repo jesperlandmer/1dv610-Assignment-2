@@ -20,10 +20,10 @@ class LoginView {
 	public function response() {
 		$message = $this->setMessage('LoginView::Message') ?: '';
 
-		if($this->getCookieSet()){
+		if($this->getCookieSet()) {
 			$response = $this->generateLogoutButtonHTML($message);
 		}
-		else{
+		else {
 			$response = $this->generateLoginFormHTML($message);
 		}
 		return $response;
@@ -39,6 +39,10 @@ class LoginView {
 		if(isset($_SESSION[$view])) {
 			$message = $_SESSION[$view];
 			unset($_SESSION[$view]);
+			return $message;
+		} else if (isset($_REQUEST[$view])) {
+			$message = $_REQUEST[$view];
+			setcookie($view, '', time() - 3600);
 			return $message;
 		}
 	}
