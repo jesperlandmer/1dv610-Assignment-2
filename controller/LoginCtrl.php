@@ -32,11 +32,12 @@ class LoginCtrl {
 	}
 
 	public function logoutUser() {
-		setcookie('LoginView::CookieName', '', time() - 3600);
-		setcookie('LoginView::CookiePassword', '', time() - 3600);
-		$params = session_get_cookie_params();
-		setcookie('LoginView::Message', 'Bye bye!', time() + (86400 * 30), "/");
-		header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
+		if ($this->cookieIsSet()) {
+			setcookie('LoginView::CookieName', '', time() - 3600);
+			setcookie('LoginView::CookiePassword', '', time() - 3600);
+			setcookie('LoginView::Message', 'Bye bye!', time() + (86400 * 30), "/");
+			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
+		}
 	}
 
 	private function getUser() {
