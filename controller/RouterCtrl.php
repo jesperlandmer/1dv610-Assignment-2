@@ -11,11 +11,11 @@ class RouterCtrl {
 	 * @return void
 	 */
 	public function route(User $usr, RegisterCtrl $rc, LoginCtrl $lc) {
-		if (!empty($_REQUEST['RegisterView::Register'])) {
+		if (isset($_REQUEST['RegisterView::Register'])) {
 			$rc->addNewUser($usr);
-		} else if (!empty($_REQUEST['LoginView::Login'])) {
+		} else if (isset($_REQUEST['LoginView::Login'])) {
 			$lc->loginUser($usr);
-		} else if (!empty($_REQUEST['LoginView::Logout'])) {
+		} else if (isset($_REQUEST['LoginView::Logout'])) {
 			$lc->logoutUser();
 		}
 	}
