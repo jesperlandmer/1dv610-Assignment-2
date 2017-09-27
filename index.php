@@ -1,8 +1,6 @@
 <?php
 
 session_start();
-setcookie('LoginView::CookieName', '', time() - 3600);
-setcookie('LoginView::CookiePassword', '', time() - 3600);
 
 // TURN ON OUTPUT BUFFERING
 ob_start();
