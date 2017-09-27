@@ -20,7 +20,7 @@ class RegisterCtrl extends LoginCtrl {
 	}
 
 	public function saveUserSuccessful($user) {
-		return $user->saveUser($_POST['RegisterView::UserName'], 
-		$_POST['RegisterView::Password'], $_POST['RegisterView::PasswordRepeat']);
+		return $user->saveUser($_REQUEST['RegisterView::UserName'], 
+		$_REQUEST['RegisterView::Password'], $_REQUEST['RegisterView::PasswordRepeat']);
 	}
 }

@@ -39,8 +39,6 @@ try {
 
   $roc->route($usr, $rc, $lc);
   $lv->render($lc->isLoggedIn($usr), $v, $rv, $dtv);
-
-  unset($_SESSION['RegisterView::Message']);
   
 } catch (Exception $e) {
 

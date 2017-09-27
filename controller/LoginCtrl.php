@@ -14,9 +14,9 @@ class LoginCtrl {
 	public function loginUser(User $user) {
 		$this->user = $user;
 
-		if ($this->getUsernameInput($_POST['LoginView::UserName'])) {
+		if ($this->getUsernameInput($_REQUEST['LoginView::UserName'])) {
 			$this->addMessage($this->messageType['userLength']);
-		} else if ($this->getPasswordInput($_POST['LoginView::Password'])) {
+		} else if ($this->getPasswordInput($_REQUEST['LoginView::Password'])) {
 			$this->addMessage($this->messageType['passLength']);
 		} else {
 			$this->getUser($user);
@@ -41,9 +41,9 @@ class LoginCtrl {
 	}
 
 	private function getUser() {
-		if ($this->getUserFound($_POST['LoginView::UserName'], $_POST['LoginView::Password'])) {
-			$this->setCookie('LoginView::CookieName', $_POST['LoginView::UserName']);
-			$this->setCookie('LoginView::CookiePassword', $_POST['LoginView::Password']);
+		if ($this->getUserFound($_REQUEST['LoginView::UserName'], $_REQUEST['LoginView::Password'])) {
+			$this->setCookie('LoginView::CookieName', $_REQUEST['LoginView::UserName']);
+			$this->setCookie('LoginView::CookiePassword', $_REQUEST['LoginView::Password']);
 			$this->addMessage($this->messageType['welcome']);
 		} else {
 			$this->addMessage($this->messageType['noUserFound']);
