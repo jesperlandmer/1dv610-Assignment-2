@@ -12,6 +12,7 @@ class User {
     "passLength" => "Password has too few characters, at least 6 characters.",
     "passMatch" => "Passwords do not match.",
     "userExists" => "User exists, pick another username.",
+    "invalidUsernameFormat" => "Username contains invalid characters.",
     "noUserFound" => "Wrong name or password"
   );
 
@@ -59,6 +60,7 @@ class User {
   }
 
   private function saveValidator($username, $password, $passwordRepeat) {
+    $this->getValidInputFormat($username);
     $this->getUsernameMinLength($username);
     $this->getPasswordMinLength($password);
     $this->getUsernameExists($username);
@@ -82,6 +84,12 @@ class User {
       'username' => $username
     ));
   }
+
+  private function getValidInputFormat($username) {
+    if (filter_var($username, FILTER_SANITIZE_STRING) != $username) {
+      $this->addMessage($this->messageType['invalidUsernameFormat']);
+    }
+	}
 
 	private function getUsernameMinLength($username) {
     if (strlen($username) < 3) {
