@@ -65,7 +65,7 @@ class LoginCtrl {
 		return (isset($_COOKIE['LoginView::CookieName']) && isset($_COOKIE['LoginView::CookiePassword']));
 	}
 
-	private function findUserByCookie($username, $password) {
+	private function findUserByCookie() {
 		return $this->user->findUser($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
 	}
 
