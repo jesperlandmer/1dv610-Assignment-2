@@ -40,10 +40,9 @@ class LoginCtrl {
 	}
 
 	private function getUser() {
-		$password = $this->user->hash($_REQUEST['LoginView::Password']);
 		if ($this->getUserFound($_REQUEST['LoginView::UserName'], $_REQUEST['LoginView::Password'])) {
 			$this->setCookie('LoginView::CookieName', $_REQUEST['LoginView::UserName']);
-			$this->setCookie('LoginView::CookiePassword', $password);
+			$this->setCookie('LoginView::CookiePassword', $_REQUEST['LoginView::Password']);
 			$this->addMessage($this->messageType['welcome']);
 		} else {
 			$this->addMessage($this->messageType['noUserFound']);
@@ -67,7 +66,7 @@ class LoginCtrl {
 	}
 
 	private function findUserByCookie() {
-		if ($this->getUserFound($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword'])) {
+		if ($this->user->findUser($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword'])) {
 			return true;
 		} else {
 			$this->addMessage('Wrong information in cookies');
@@ -76,7 +75,7 @@ class LoginCtrl {
 	}
 
 	private function getUserFound($username, $password) {
-		return null !== $this->user->findUser($username, $password);
+		return $this->user->findUser($username, $password);
 	}
 
 	private function getUsernameInput($username) {
