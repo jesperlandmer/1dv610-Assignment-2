@@ -30,7 +30,7 @@ class LoginCtrl {
 		$this->user = $user;
 
 		if ($this->cookieIsSet()) {
-			return $this->getUserFound($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
+			return $this->findUserByCookie();
 		}
 	}
 
@@ -63,6 +63,14 @@ class LoginCtrl {
 
 	private function cookieIsSet() {
 		return (isset($_COOKIE['LoginView::CookieName']) && isset($_COOKIE['LoginView::CookiePassword']));
+	}
+
+	private function findUserByCookie($username, $password) {
+		if ($this->user->findUser($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword'])) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private function getUserFound($username, $password) {
