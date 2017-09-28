@@ -66,7 +66,12 @@ class LoginCtrl {
 	}
 
 	private function findUserByCookie() {
-		return $this->user->findUser($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
+		if ($this->user->findUser($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword'])) {
+			return true;
+		} else {
+			$this->addMessage('Wrong information in cookies');
+			return false;
+		}
 	}
 
 	private function getUserFound($username, $password) {
