@@ -7,7 +7,6 @@ class LoginCtrl {
 		"userLength" => "Username is missing",
 		"passLength" => "Password is missing",
 		"noUserFound" => "Wrong name or password",
-		"wrongCookies" => "Wrong information in cookies",
 		"welcome" => "Welcome",
 		"logOut" => "Bye bye!"
 	);
@@ -33,7 +32,7 @@ class LoginCtrl {
 		if ($this->cookieIsSet()) {
 			return true;
 		} else {
-			$this->addMessage($this->messageType['wrongCookies']);
+			$this->addMessage('Wrong information in cookies');
 			return false;
 		}
 	}
