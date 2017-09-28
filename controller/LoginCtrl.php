@@ -32,7 +32,6 @@ class LoginCtrl {
 		if ($this->cookieIsSet()) {
 			return true;
 		} else {
-			$this->addMessage('Wrong information in cookies');
 			return false;
 		}
 	}
