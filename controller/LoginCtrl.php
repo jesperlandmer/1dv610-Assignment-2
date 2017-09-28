@@ -21,6 +21,8 @@ class LoginCtrl {
 			$this->addMessage($this->messageType['passLength']);
 		} else {
 			$this->getUser($user);
+			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
+			exit();
 		}
 	}
 
@@ -33,20 +35,15 @@ class LoginCtrl {
 	}
 
 	public function logoutUser() {
-		if ($this->cookieIsSet()) {
-			setcookie('LoginView::CookieName', '', time() - 3600);
-			setcookie('LoginView::CookiePassword', '', time() - 3600);
-			setcookie('LoginView::Message', 'Bye bye!', time() + (86400 * 30), "/");
-			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
-		}
+		$this->clearCookies();
+		header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
 	}
 
 	private function getUser() {
 		if ($this->getUserFound($_REQUEST['LoginView::UserName'], $_REQUEST['LoginView::Password'])) {
 			$this->setCookie('LoginView::CookieName', $_REQUEST['LoginView::UserName']);
 			$this->setCookie('LoginView::CookiePassword', $_REQUEST['LoginView::Password']);
-			setcookie('LoginView::Message', $this->messageType['welcome'], time() + (86400 * 30), "/");
-			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
+			$this->addMessage($this->messageType['welcome']);
 		} else {
 			$this->addMessage($this->messageType['noUserFound']);
 		}
@@ -54,6 +51,14 @@ class LoginCtrl {
 
 	protected function setCookie($cookieName, $cookieValue) {
 		setcookie($cookieName, $cookieValue, time() + (86400 * 30), "/");
+	}
+
+	private function clearCookies() {
+		if ($this->cookieIsSet()) {
+			setcookie('LoginView::CookieName', '', time() - 3600);
+			setcookie('LoginView::CookiePassword', '', time() - 3600);
+			setcookie('LoginView::Message', 'Bye bye!', time() + (86400 * 30), "/");
+		}
 	}
 
 	private function cookieIsSet() {
