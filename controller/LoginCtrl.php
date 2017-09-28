@@ -29,11 +29,7 @@ class LoginCtrl {
 	public function isLoggedIn(User $user) {
 		$this->user = $user;
 
-		if ($this->cookieIsSet()) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->cookieIsSet();
 	}
 
 	public function logoutUser() {
