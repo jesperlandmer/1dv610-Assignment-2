@@ -29,7 +29,9 @@ class LoginCtrl {
 	public function isLoggedIn(User $user) {
 		$this->user = $user;
 
-		return $this->cookieIsSet();
+		if ($this->cookieIsSet()) {
+			return $this->getUserFound($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
+		}
 	}
 
 	public function logoutUser() {
@@ -60,9 +62,7 @@ class LoginCtrl {
 	}
 
 	private function cookieIsSet() {
-		if (isset($_COOKIE['LoginView::CookieName']) && isset($_COOKIE['LoginView::CookiePassword'])) {
-			return $this->getUserFound($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword']);
-		}
+		return (isset($_COOKIE['LoginView::CookieName']) && isset($_COOKIE['LoginView::CookiePassword']));
 	}
 
 	private function getUserFound($username, $password) {
