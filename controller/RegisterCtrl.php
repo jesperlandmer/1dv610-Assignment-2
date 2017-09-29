@@ -7,6 +7,7 @@ class RegisterCtrl extends LoginCtrl {
 	private $username;
 	private $password;
 	private $passwordRepeat;
+	private $user;
 	private $messageType = array(
 		"registered" => "Registered new user.",
 	);
@@ -19,32 +20,33 @@ class RegisterCtrl extends LoginCtrl {
 	 * @return void
 	 */
 	public function addNewUser(User $user) {
-		$this->setCredentials();
-		$this->filterUserName();
+		$this->setCredentials($user);
+		$this->saveUser();
 
-		if ($this->saveUserSuccessful($user)) {
-			$this->setLoginUsername();
+		$_SESSION['RegisterView::UserName'] = $this->getFilterUserName();
+		$_SESSION['LoginView::UserName'] = $this->username;
+	}
+
+	private function setCredentials($user) {
+		$this->user = $user;
+		$this->username = $_REQUEST['RegisterView::UserName'];
+		$this->password = $_REQUEST['RegisterView::Password'];
+		$this->passwordRepeat = $_REQUEST['RegisterView::PasswordRepeat'];
+	}
+
+	private function saveUser() {
+		if ($this->isUserSaved()) {
 			parent::addMessage($this->messageType['registered']);
 			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
 			exit();
 		}
 	}
 
-	private function setCredentials() {
-		$this->username = $_REQUEST['RegisterView::UserName'];
-		$this->password = $_REQUEST['RegisterView::Password'];
-		$this->passwordRepeat = $_REQUEST['RegisterView::PasswordRepeat'];
+	private function isUserSaved() {
+		return $this->user->saveUser($this->username, $this->password, $this->passwordRepeat);
 	}
 
-	private function saveUserSuccessful($user) {
-		return $user->saveUser($this->username, $this->password, $this->passwordRepeat);
-	}
-
-	private function filterUserName() {
-		$_SESSION['RegisterView::UserName'] = filter_var($this->username, FILTER_SANITIZE_STRING);
-	}
-
-	private function setLoginUsername() {
-		$_SESSION['LoginView::UserName'] = $this->username;
+	private function getFilterUserName() {
+		return filter_var($this->username, FILTER_SANITIZE_STRING);
 	}
 }
