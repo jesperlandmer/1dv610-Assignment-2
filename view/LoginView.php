@@ -92,7 +92,7 @@ class LoginView {
 	private function getRequestUserName($userToCheck) {
 		$usernameToReturn = '';
 
-		if ($this->isRequestUsername()) {
+		if ($this->isRequestUsername($userToCheck)) {
 			$usernameToReturn = $_SESSION[$userToCheck];
 			unset($_SESSION[$userToCheck]);
 		}
