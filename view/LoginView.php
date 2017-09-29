@@ -85,14 +85,27 @@ class LoginView {
 		';
 	}
 
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
+	/**
+	* Gets stored username from previous register attempt
+	* @return string, session stored username
+	*/
 	private function getRequestUserName() {
-		$username = '';
-		if (isset($_SESSION['UserName'])) {
-			$username = $_SESSION['UserName'];
+		$usernameToReturn = '';
+
+		if ($this->isRequestUsername()) {
+			$usernameToReturn = $_SESSION['UserName'];
 			unset($_SESSION['UserName']);
-			return $username;
 		}
+
+		return $usernameToReturn;
+	}
+
+	/**
+	* Check if stored session username
+	* @return boolean
+	*/
+	private function isRequestUsername() {
+		return isset($_SESSION['UserName']);
 	}
 
 }
