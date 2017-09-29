@@ -16,7 +16,6 @@ class RegisterCtrl extends LoginCtrl {
 
 		if ($this->saveUserSuccessful($user)) {
 			$_SESSION['loginUser'] = $_REQUEST['RegisterView::UserName'];
-			parent::setCookie('LoginView::CookieName', $_REQUEST['RegisterView::UserName']);
 			$_SESSION['LoginView::Message'] = 'Registered new user.';
 			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
 		}
