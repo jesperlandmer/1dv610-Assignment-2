@@ -17,7 +17,7 @@ class RegisterView extends LayoutView {
 	 * @return  void BUT writes to standard output!
 	 */
 	public function response($isLoggedIn) {
-		$message = parent::getRequestStore('RegisterView::Message') ?: '';
+		$message = parent::getRequestStore('RegisterView::Message');
 
 		if (!$isLoggedIn) {
 			$response = $this->generateRegisterFormHTML($message);

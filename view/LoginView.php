@@ -20,7 +20,7 @@ class LoginView extends LayoutView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response($isLoggedIn) {
-		$message = parent::getRequestStore('LoginView::Message') ?: '';
+		$message = parent::getRequestStore('LoginView::Message');
 
 		if($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML($message);

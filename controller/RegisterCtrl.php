@@ -4,6 +4,13 @@ require_once('LoginCtrl.php');
 
 class RegisterCtrl extends LoginCtrl {
 
+	private $username;
+	private $password;
+	private $passwordRepeat;
+	private $messageType = array(
+		"registered" => "Username is missing",
+	);
+
 	/**
 	 * Save new user
 	 *
@@ -12,17 +19,30 @@ class RegisterCtrl extends LoginCtrl {
 	 * @return void
 	 */
 	public function addNewUser(User $user) {
-		$_SESSION['RegisterView::UserName'] = filter_var($_REQUEST['RegisterView::UserName'], FILTER_SANITIZE_STRING);
+
+		$this->username = $_REQUEST['RegisterView::UserName'];
+		$this->password = $_REQUEST['RegisterView::Password'];
+		$this->passwordRepeat = $_REQUEST['RegisterView::PasswordRepeat'];
+		$this->filterUserName();
 
 		if ($this->saveUserSuccessful($user)) {
-			$_SESSION['LoginView::UserName'] = $_REQUEST['RegisterView::UserName'];
+			$this->setLoginUsername();
+			parent::addMessage($this->messageType['registered']);
 			$_SESSION['LoginView::Message'] = 'Registered new user.';
 			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
+			exit();
 		}
 	}
 
-	public function saveUserSuccessful($user) {
-		return $user->saveUser($_REQUEST['RegisterView::UserName'], 
-		$_REQUEST['RegisterView::Password'], $_REQUEST['RegisterView::PasswordRepeat']);
+	private function saveUserSuccessful($user) {
+		return $user->saveUser($this->username, $this->password, $this->passwordRepeat);
+	}
+
+	private function filterUserName() {
+		$_SESSION['RegisterView::UserName'] = filter_var($this->username, FILTER_SANITIZE_STRING);
+	}
+
+	private function setLoginUsername() {
+		$_SESSION['LoginView::UserName'] = $this->username;
 	}
 }

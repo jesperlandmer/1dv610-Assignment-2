@@ -11,12 +11,26 @@ class RouterCtrl {
 	 * @return void
 	 */
 	public function route(User $usr, RegisterCtrl $rc, LoginCtrl $lc) {
-		if (isset($_REQUEST['RegisterView::Register'])) {
+		if ($this->isRegisterPage()) {
 			$rc->addNewUser($usr);
-		} else if (isset($_REQUEST['LoginView::Login'])) {
+
+		} else if ($this->isLoginPage()) {
 			$lc->loginUser($usr);
-		} else if (isset($_REQUEST['LoginView::Logout'])) {
+
+		} else if ($this->isLogOut()) {
 			$lc->logoutUser();
 		}
+	}
+
+	private function isRegisterPage() {
+		return isset($_REQUEST['RegisterView::Register']);
+	}
+
+	private function isLoginPage() {
+		return isset($_REQUEST['LoginView::Login']);
+	}
+
+	private function isLogOut() {
+		return isset($_REQUEST['LoginView::Login']);
 	}
 }
