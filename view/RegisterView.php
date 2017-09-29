@@ -41,15 +41,15 @@ class RegisterView extends LoginView {
 					<p id="' . self::$registerMessageId . '">' . $message . '</p>
 			
 					<label for="' . self::$registerName . '">Username :</label>
-					<input type="text" size="20" name="' . self::$registerName . '" id="' . self::$registerName . '" value="' . $this->getRequestUserName() .'">
+					<input type="text" name="' . self::$registerName . '" id="' . self::$registerName . '" value="' . parent::getRequestUserName(self::$registerName) .'">
 					<br>
 			
 					<label for="' . self::$registerPassword . '">Password  :</label>
-					<input type="password" size="20" name="' . self::$registerPassword . '" id="' . self::$registerPassword . '" value="">
+					<input type="password" name="' . self::$registerPassword . '" id="' . self::$registerPassword . '" value="">
 					<br>
 			
 					<label for="' . self::$registerPasswordRepeat . '">Repeat password  :</label>
-					<input type="password" size="20" name="' . self::$registerPasswordRepeat . '" id="' . self::$registerPasswordRepeat . '" value="">
+					<input type="password" name="' . self::$registerPasswordRepeat . '" id="' . self::$registerPasswordRepeat . '" value="">
 					<br>
 			
 					<input id="submit" type="submit" name="' . self::$register . '" value="Register">
@@ -57,29 +57,6 @@ class RegisterView extends LoginView {
 				</fieldset>
 			</form>
 		';
-	}
-
-	/**
-	* Gets stored username from previous register attempt
-	* @return string, session stored username
-	*/
-	private function getRequestUserName() {
-		$usernameToReturn = '';
-
-		if ($this->isRequestUsername()) {
-			$usernameToReturn = $_SESSION[self::$registerName];
-			unset($_SESSION[self::$registerName]);
-		}
-
-		return $usernameToReturn;
-	}
-
-	/**
-	* Check if stored session username
-	* @return boolean
-	*/
-	private function isRequestUsername() {
-		return isset($_SESSION[self::$registerName]);
 	}
 }
 
