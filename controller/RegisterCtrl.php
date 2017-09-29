@@ -24,7 +24,6 @@ class RegisterCtrl extends LoginCtrl {
 		$this->saveUser();
 
 		$_SESSION['RegisterView::UserName'] = $this->getFilterUserName();
-		$_SESSION['LoginView::UserName'] = $this->username;
 	}
 
 	private function setCredentials($user) {
@@ -36,6 +35,7 @@ class RegisterCtrl extends LoginCtrl {
 
 	private function saveUser() {
 		if ($this->isUserSaved()) {
+			$_SESSION['LoginView::UserName'] = $this->username;
 			parent::addMessage($this->messageType['registered']);
 			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
 			exit();
