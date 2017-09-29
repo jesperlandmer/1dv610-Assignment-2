@@ -71,7 +71,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName(self::$cookieName) . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -85,27 +85,14 @@ class LoginView {
 		';
 	}
 
-	/**
-	* Gets stored username from previous register attempt
-	* @return string, session stored username
-	*/
-	protected function getRequestUserName($sessionStoredName) {
-		$usernameToReturn = '';
-
-		if ($this->isRequestUsername($sessionStoredName)) {
-			$usernameToReturn = $_SESSION[$sessionStoredName];
-			unset($_SESSION[$sessionStoredName]);
+	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
+	private function getRequestUserName() {
+		$username = '';
+		if (isset($_SESSION[self::$cookieName])) {
+			$username = $_SESSION[self::$cookieName];
+			unset($_SESSION[self::$cookieName]);
+			return $username;
 		}
-
-		return $usernameToReturn;
-	}
-
-	/**
-	* Check if stored session username
-	* @return boolean
-	*/
-	private function isRequestUsername($sessionToCheck) {
-		return isset($_SESSION[$sessionToCheck]);
 	}
 
 }
