@@ -31,6 +31,6 @@ class RouterCtrl {
 	}
 
 	private function isLogOut() {
-		return isset($_REQUEST['LoginView::Login']);
+		return isset($_REQUEST['LoginView::Logout']);
 	}
 }
