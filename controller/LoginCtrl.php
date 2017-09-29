@@ -38,6 +38,7 @@ class LoginCtrl {
 	public function logoutUser() {
 		$this->clearCookies();
 		header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
+		exit();
 	}
 
 	private function getUser() {
@@ -58,7 +59,7 @@ class LoginCtrl {
 		if ($this->cookieIsSet()) {
 			setcookie('LoginView::CookieName', '', time() - 3600);
 			setcookie('LoginView::CookiePassword', '', time() - 3600);
-			setcookie('LoginView::Message', 'Bye bye!', time() + (86400 * 30), "/");
+			$this->addMessage($this->messageType['logOut']);
 		}
 	}
 
