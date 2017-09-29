@@ -67,7 +67,6 @@ class LoginCtrl {
 	}
 
 	private function findUserByCookie() {
-		echo md5($_COOKIE['LoginView::CookiePassword'], 'gadsgagfsd');
 		if ($this->user->findUser($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword'])) {
 			return true;
 		} else {

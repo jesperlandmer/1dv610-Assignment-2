@@ -15,11 +15,15 @@ class RegisterView extends LoginView {
 	 *
 	 * @return  void BUT writes to standard output!
 	 */
-	public function response() {
+	public function response($isLoggedIn) {
 		$message = parent::setMessage('RegisterView::Message') ?: '';
 
-		$response = $this->generateRegisterFormHTML($message);
-		return $response;
+		if (!$isLoggedIn) {
+			$response = $this->generateRegisterFormHTML($message);
+			return $response;
+		} else {
+			throw new Exception('Can\'t register when logged in');
+		}
 	}
 
 	/**

@@ -32,13 +32,19 @@ try {
   $lv = new LayoutView();
 
   //CREATE OBJECTS OF THE CONTROLLERS
-  $usr = new User();
   $rc = new RegisterCtrl();
   $lc = new LoginCtrl();
   $roc = new RouterCtrl();
 
+  //CREATE OBJECTS OF THE MODEL
+  $usr = new User();
+
+  //INITIALIZE CONTROLLERS
   $roc->route($usr, $rc, $lc);
-  $lv->render($lc->isLoggedIn($usr), $v, $rv, $dtv);
+  $isLoggedIn = $lc->isLoggedIn($usr);
+
+  //INITIALIZE VIEWS
+  $lv->render($isLoggedIn, $v, $rv, $dtv);
   
 } catch (Exception $e) {
 

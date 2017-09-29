@@ -2,6 +2,13 @@
 
 class LayoutView {
 
+  /**
+   * Renders the HTML code document
+   *
+   * @param $isLoggedIn, Boolean check if logged in
+	 *
+	 * @return void BUT writes to standard output
+	 */
   public function render($isLoggedIn, LoginView $v, RegisterView $r, DateTimeView $dtv) {
     echo '<!DOCTYPE html>
       <html>
@@ -11,7 +18,8 @@ class LayoutView {
         </head>
         <body>
           <h1>Assignment 2</h1>
-          ' . $this->renderIsLoggedIn($isLoggedIn) . '
+          ' . $this->renderTopLink($isLoggedIn) . '
+          ' . $this->renderAuthStatus($isLoggedIn) . '
 
           <div class="container">
               ' . $this->renderFormResponse($isLoggedIn, $v, $r) . '
@@ -23,36 +31,58 @@ class LayoutView {
     ';
   }
 
-  private function renderTopLink() {
-    if (isset($_GET["register"])) {
-      return $this->renderLoginLink();
-    } else {
-      return $this->renderRegisterLink();
+  /**
+	 * Checks if register page or not
+	 *
+	 * @return boolean
+	 */
+  private function isRegisterPage() {
+    return isset($_GET["register"]);
+  }
+
+  /**
+	 * Returns top link in layout
+	 *
+	 * @return string 
+	 */
+  private function renderTopLink($isLoggedIn) {
+    if (!$isLoggedIn) {
+      return $this->generateTopLinkHTML();
     }
   }
 
+  private function generateTopLinkHTML() {
+    if ($this->isRegisterPage()) {
+      return '<a href="?">Back to login</a>';
+    } else {
+      return '<a href="?register">Register a new user</a>';
+    }
+  }
+
+  /**
+	 * Returns the requested page form
+	 *
+	 * @return string HTML code
+	 */
   private function renderFormResponse($isLoggedIn, $v, $r) {
-    if (isset($_GET["register"])) {
-      return $r->response();
+    if ($this->isRegisterPage()) {
+      return $r->response($isLoggedIn);
     } else {
       return $v->response($isLoggedIn);
     }
   }
 
-  private function renderRegisterLink() {
-    return '<a href="?register">Register a new user</a>';
-  }
-
-  private function renderLoginLink() {
-      return '<a href="?">Back to login</a>';
-  }
-
-  private function renderIsLoggedIn($isLoggedIn) {
+  /**
+	 * Returns top status
+	 *
+	 * @return string HTML code
+	 */
+  private function renderAuthStatus($isLoggedIn) {
     if ($isLoggedIn) {
       return '<h2>Logged in</h2>';
     }
     else {
-      return '' . $this->renderTopLink() . '<h2>Not logged in</h2>';
+      return '<h2>Not logged in</h2>';
     }
   }
 }
