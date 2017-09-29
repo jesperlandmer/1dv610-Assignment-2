@@ -4,10 +4,10 @@ require_once('LayoutView.php');
 
 class RegisterView extends LayoutView {
 	private static $register = 'RegisterView::Register';
-	private static $registerName = 'RegisterView::UserName';
-	private static $registerPassword = 'RegisterView::Password';
-	private static $registerPasswordRepeat = 'RegisterView::PasswordRepeat';
-	private static $registerMessageId = 'RegisterView::Message';
+	private static $name = 'RegisterView::UserName';
+	private static $password = 'RegisterView::Password';
+	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
+	private static $messageId = 'RegisterView::Message';
 
 	/**
 	 * Create HTTP response
@@ -38,18 +38,18 @@ class RegisterView extends LayoutView {
 			<form method="post">
 				<fieldset>
 					<legend>Register a new user - Write username and password</legend>
-					<p id="' . self::$registerMessageId . '">' . $message . '</p>
+					<p id="' . self::$messageId . '">' . $message . '</p>
 			
-					<label for="' . self::$registerName . '">Username :</label>
-					<input type="text" name="' . self::$registerName . '" id="' . self::$registerName . '" value="' . parent::getRequestStore(self::$registerName) .'">
+					<label for="' . self::$name . '">Username :</label>
+					<input type="text" name="' . self::$name . '" id="' . self::$name . '" value="' . parent::getRequestStore(self::$registerName) .'">
 					<br>
 			
-					<label for="' . self::$registerPassword . '">Password  :</label>
-					<input type="password" name="' . self::$registerPassword . '" id="' . self::$registerPassword . '" value="">
+					<label for="' . self::$password . '">Password  :</label>
+					<input type="password" name="' . self::$password . '" id="' . self::$password . '" value="">
 					<br>
 			
-					<label for="' . self::$registerPasswordRepeat . '">Repeat password  :</label>
-					<input type="password" name="' . self::$registerPasswordRepeat . '" id="' . self::$registerPasswordRepeat . '" value="">
+					<label for="' . self::$passwordRepeat . '">Repeat password  :</label>
+					<input type="password" name="' . self::$passwordRepeat . '" id="' . self::$passwordRepeat . '" value="">
 					<br>
 			
 					<input id="submit" type="submit" name="' . self::$register . '" value="Register">
