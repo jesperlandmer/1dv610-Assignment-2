@@ -14,7 +14,7 @@ class LoginCtrl {
 
 	public function loginUser(User $user) {
 		$this->user = $user;
-		$_SESSION['loginUser'] = $_REQUEST['LoginView::UserName'];
+		$_SESSION['UserName'] = $_REQUEST['LoginView::UserName'];
 
 		if ($this->getUsernameInput($_REQUEST['LoginView::UserName'])) {
 			$this->addMessage($this->messageType['userLength']);
