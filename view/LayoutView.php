@@ -85,37 +85,27 @@ class LayoutView {
       return '<h2>Not logged in</h2>';
     }
   }
-
-  protected function setMessage($view) {
-		$message = '';
-
-		if(isset($_SESSION[$view])) {
-			$message = $_SESSION[$view];
-			unset($_SESSION[$view]);
-			return $message;
-		}
-  }
   
   /**
 	* Gets stored username from previous register attempt
 	* @return string, session stored username
 	*/
-	protected function getRequestUserName($storedUserName) {
-		$usernameToReturn = '';
+	protected function getRequestStore($storedKey) {
+		$stringToReturn = '';
 
-		if ($this->isRequestUsername($storedUserName)) {
-			$usernameToReturn = $_SESSION[$storedUserName];
-			unset($_SESSION[$storedUserName]);
+		if ($this->sessionSet($storedKey)) {
+			$stringToReturn = $_SESSION[$storedKey];
+			unset($_SESSION[$storedKey]);
 		}
 
-		return $usernameToReturn;
+		return $stringToReturn;
 	}
 
 	/**
 	* Check if stored session username
 	* @return boolean
 	*/
-	private function isRequestUsername($userToCheck) {
-		return isset($_SESSION[$userToCheck]);
+	private function sessionSet($keyToCheck) {
+		return isset($_SESSION[$keyToCheck]);
 	}
 }

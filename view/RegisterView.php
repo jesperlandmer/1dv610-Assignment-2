@@ -17,7 +17,7 @@ class RegisterView extends LayoutView {
 	 * @return  void BUT writes to standard output!
 	 */
 	public function response($isLoggedIn) {
-		$message = parent::setMessage('RegisterView::Message') ?: '';
+		$message = parent::getRequestStore('RegisterView::Message') ?: '';
 
 		if (!$isLoggedIn) {
 			$response = $this->generateRegisterFormHTML($message);
@@ -41,15 +41,15 @@ class RegisterView extends LayoutView {
 					<p id="' . self::$registerMessageId . '">' . $message . '</p>
 			
 					<label for="' . self::$registerName . '">Username :</label>
-					<input type="text" size="20" name="' . self::$registerName . '" id="' . self::$registerName . '" value="' . parent::getRequestUserName(self::$registerName) .'">
+					<input type="text" name="' . self::$registerName . '" id="' . self::$registerName . '" value="' . parent::getRequestStore(self::$registerName) .'">
 					<br>
 			
 					<label for="' . self::$registerPassword . '">Password  :</label>
-					<input type="password" size="20" name="' . self::$registerPassword . '" id="' . self::$registerPassword . '" value="">
+					<input type="password" name="' . self::$registerPassword . '" id="' . self::$registerPassword . '" value="">
 					<br>
 			
 					<label for="' . self::$registerPasswordRepeat . '">Repeat password  :</label>
-					<input type="password" size="20" name="' . self::$registerPasswordRepeat . '" id="' . self::$registerPasswordRepeat . '" value="">
+					<input type="password" name="' . self::$registerPasswordRepeat . '" id="' . self::$registerPasswordRepeat . '" value="">
 					<br>
 			
 					<input id="submit" type="submit" name="' . self::$register . '" value="Register">

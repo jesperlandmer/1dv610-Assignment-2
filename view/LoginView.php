@@ -20,7 +20,7 @@ class LoginView extends LayoutView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response($isLoggedIn) {
-		$message = parent::setMessage('LoginView::Message') ?: '';
+		$message = parent::getRequestStore('LoginView::Message') ?: '';
 
 		if($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML($message);
@@ -59,7 +59,7 @@ class LoginView extends LayoutView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . parent::getRequestUserName(self::$name) . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . parent::getRequestStore(self::$name) . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
