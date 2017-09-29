@@ -64,12 +64,22 @@ class RegisterView extends LoginView {
 	* @return string, session stored username
 	*/
 	private function getRequestUserName() {
-		$username = '';
-		if (isset($_SESSION[self::$registerName])) {
-			$username = $_SESSION[self::$registerName];
+		$usernameToReturn = '';
+
+		if ($this->isRequestUsername()) {
+			$usernameToReturn = $_SESSION[self::$registerName];
 			unset($_SESSION[self::$registerName]);
-			return $username;
 		}
+
+		return $usernameToReturn;
+	}
+
+	/**
+	* Check if stored session username
+	* @return boolean
+	*/
+	private function isRequestUsername() {
+		return isset($_SESSION[self::$registerName]);
 	}
 }
 
