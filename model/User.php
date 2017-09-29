@@ -42,7 +42,7 @@ class User {
     if (!isset($_SESSION['RegisterView::Message'])) {
       $this->userData = $this->dbHelper->saveData(array(
         'username' => $username,
-        'password' => $this->hash($password)
+        'password' => $password
       ));
       return true;
     }

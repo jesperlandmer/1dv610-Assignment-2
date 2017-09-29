@@ -3,6 +3,7 @@
 class LoginCtrl {
 
 	private $user;
+	private $salt = 'adsfasdfa*sdfaADSsdfAds^hthdgfhdaASDD*fsmJDJSJJ';
 	private $messageType = array(
 		"userLength" => "Username is missing",
 		"passLength" => "Password is missing",
@@ -66,6 +67,7 @@ class LoginCtrl {
 	}
 
 	private function findUserByCookie() {
+		echo md5($_COOKIE['LoginView::CookiePassword'], 'gadsgagfsd');
 		if ($this->user->findUser($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword'])) {
 			return true;
 		} else {
