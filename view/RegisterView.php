@@ -1,8 +1,8 @@
 <?php
 
-require_once('LoginView.php');
+require_once('LayoutView.php');
 
-class RegisterView extends LoginView {
+class RegisterView extends LayoutView {
 	private static $register = 'RegisterView::Register';
 	private static $registerName = 'RegisterView::UserName';
 	private static $registerPassword = 'RegisterView::Password';

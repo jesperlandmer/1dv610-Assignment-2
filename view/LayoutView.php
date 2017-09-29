@@ -85,4 +85,37 @@ class LayoutView {
       return '<h2>Not logged in</h2>';
     }
   }
+
+  protected function setMessage($view) {
+		$message = '';
+
+		if(isset($_SESSION[$view])) {
+			$message = $_SESSION[$view];
+			unset($_SESSION[$view]);
+			return $message;
+		}
+  }
+  
+  /**
+	* Gets stored username from previous register attempt
+	* @return string, session stored username
+	*/
+	protected function getRequestUserName($storedUserName) {
+		$usernameToReturn = '';
+
+		if ($this->isRequestUsername($storedUserName)) {
+			$usernameToReturn = $_SESSION[$storedUserName];
+			unset($_SESSION[$storedUserName]);
+		}
+
+		return $usernameToReturn;
+	}
+
+	/**
+	* Check if stored session username
+	* @return boolean
+	*/
+	private function isRequestUsername($userToCheck) {
+		return isset($_SESSION[$userToCheck]);
+	}
 }

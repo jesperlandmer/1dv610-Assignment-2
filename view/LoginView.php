@@ -1,6 +1,8 @@
 <?php
 
-class LoginView {
+require_once('LayoutView.php');
+
+class LoginView extends LayoutView {
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
 	private static $name = 'LoginView::UserName';
@@ -18,7 +20,7 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response($isLoggedIn) {
-		$message = $this->setMessage('LoginView::Message') ?: '';
+		$message = parent::setMessage('LoginView::Message') ?: '';
 
 		if($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML($message);
@@ -28,16 +30,6 @@ class LoginView {
 		}
 
 		return $response;
-	}
-
-	protected function setMessage($view) {
-		$message = '';
-
-		if(isset($_SESSION[$view])) {
-			$message = $_SESSION[$view];
-			unset($_SESSION[$view]);
-			return $message;
-		}
 	}
 
 	/**
@@ -67,7 +59,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName(self::$name) . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . parent::getRequestUserName(self::$name) . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -79,29 +71,6 @@ class LoginView {
 				</fieldset>
 			</form>
 		';
-	}
-
-	/**
-	* Gets stored username from previous register attempt
-	* @return string, session stored username
-	*/
-	protected function getRequestUserName($storedUserName) {
-		$usernameToReturn = '';
-
-		if ($this->isRequestUsername($storedUserName)) {
-			$usernameToReturn = $_SESSION[$storedUserName];
-			unset($_SESSION[$storedUserName]);
-		}
-
-		return $usernameToReturn;
-	}
-
-	/**
-	* Check if stored session username
-	* @return boolean
-	*/
-	private function isRequestUsername($userToCheck) {
-		return isset($_SESSION[$userToCheck]);
 	}
 
 }
