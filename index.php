@@ -17,6 +17,7 @@ require_once('view/LayoutView.php');
 //INCLUDE THE CONTROLLER FILES NEEDED...
 require_once('controller/RegisterCtrl.php');
 require_once('controller/LoginCtrl.php');
+require_once('controller/LogoutCtrl.php');
 require_once('controller/RouterCtrl.php');
 
 //MAKE SURE ERRORS ARE SHOWN... MIGHT WANT TO TURN THIS OFF ON A PUBLIC SERVER
@@ -33,15 +34,16 @@ try {
 
   //CREATE OBJECTS OF THE CONTROLLERS
   $rc = new RegisterCtrl();
-  $lc = new LoginCtrl();
+  $lic = new LoginCtrl();
+  $loc = new LogoutCtrl();
   $roc = new RouterCtrl();
 
   //CREATE OBJECTS OF THE MODEL
   $usr = new User();
 
   //INITIALIZE CONTROLLERS
-  $roc->route($usr, $rc, $lc);
-  $isLoggedIn = $lc->isLoggedIn($usr);
+  $roc->route($usr, $rc, $lic, $loc);
+  $isLoggedIn = $loc->isLoggedIn($usr);
 
   //INITIALIZE VIEWS
   $lv->render($isLoggedIn, $v, $rv, $dtv);

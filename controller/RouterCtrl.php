@@ -3,22 +3,23 @@
 require_once(__DIR__ . '/../model/User.php');
 
 class RouterCtrl {
+	
 	/**
-	 * Register or login user depending on HTTP request
+	 * Routes the http-request to right controller
 	 *
-	 * Should be instatiated after a post has been made
+	 * Should be instatiated on each request
 	 *
-	 * @return void
+	 * @return void BUT writes to sessions and cookies!
 	 */
-	public function route(User $usr, RegisterCtrl $rc, LoginCtrl $lc) {
+	public function route(User $usr, RegisterCtrl $rc, LoginCtrl $lic, LogoutCtrl $loc) {
 		if ($this->isRegisterPage()) {
 			$rc->addNewUser($usr);
 
 		} else if ($this->isLoginPage()) {
-			$lc->loginUser($usr);
+			$lic->loginUser($usr);
 
 		} else if ($this->isLogOut()) {
-			$lc->logoutUser();
+			$loc->logoutUser();
 		}
 	}
 

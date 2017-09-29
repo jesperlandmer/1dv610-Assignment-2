@@ -26,6 +26,10 @@ class RegisterCtrl extends LoginCtrl {
 		$_SESSION['RegisterView::UserName'] = $this->getFilterUserName();
 	}
 
+	/**
+	 * Set private variables for new user
+	 * @return void BUT sets class variables!
+	 */
 	private function setCredentials($user) {
 		$this->user = $user;
 		$this->username = $_REQUEST['RegisterView::UserName'];
@@ -33,6 +37,10 @@ class RegisterCtrl extends LoginCtrl {
 		$this->passwordRepeat = $_REQUEST['RegisterView::PasswordRepeat'];
 	}
 
+	/**
+	 * Save user and redirect to login-page
+	 * @return void BUT writes to session message!
+	 */
 	private function saveUser() {
 		if ($this->isUserSaved()) {
 			$_SESSION['LoginView::UserName'] = $this->username;
@@ -42,10 +50,18 @@ class RegisterCtrl extends LoginCtrl {
 		}
 	}
 
+	/**
+	 * Saves user with model class
+	 * @return boolean, if save has been successful!
+	 */
 	private function isUserSaved() {
 		return $this->user->saveUser($this->username, $this->password, $this->passwordRepeat);
 	}
 
+	/**
+	 * filter username input from script-like input
+	 * @return string, editing out script elements
+	 */
 	private function getFilterUserName() {
 		return filter_var($this->username, FILTER_SANITIZE_STRING);
 	}

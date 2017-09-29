@@ -8,8 +8,7 @@ class LoginCtrl {
 		"userLength" => "Username is missing",
 		"passLength" => "Password is missing",
 		"noUserFound" => "Wrong name or password",
-		"welcome" => "Welcome",
-		"logOut" => "Bye bye!"
+		"welcome" => "Welcome"
 	);
 
 	public function loginUser(User $user) {
@@ -27,20 +26,6 @@ class LoginCtrl {
 		}
 	}
 
-	public function isLoggedIn(User $user) {
-		$this->user = $user;
-
-		if ($this->cookieIsSet()) {
-			return $this->findUserByCookie();
-		}
-	}
-
-	public function logoutUser() {
-		$this->clearCookies();
-		header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
-		exit();
-	}
-
 	private function getUser() {
 		if ($this->getUserFound($_REQUEST['LoginView::UserName'], $_REQUEST['LoginView::Password'])) {
 			$this->setCookie('LoginView::CookieName', $_REQUEST['LoginView::UserName']);
@@ -55,24 +40,11 @@ class LoginCtrl {
 		setcookie($cookieName, $cookieValue, time() + (86400 * 30), "/");
 	}
 
-	private function clearCookies() {
-		if ($this->cookieIsSet()) {
-			setcookie('LoginView::CookieName', '', time() - 3600);
-			setcookie('LoginView::CookiePassword', '', time() - 3600);
-			$this->addMessage($this->messageType['logOut']);
-		}
-	}
-
-	private function cookieIsSet() {
-		return (isset($_COOKIE['LoginView::CookieName']) && isset($_COOKIE['LoginView::CookiePassword']));
-	}
-
-	private function findUserByCookie() {
-		if ($this->user->findUser($_COOKIE['LoginView::CookieName'], $_COOKIE['LoginView::CookiePassword'])) {
-			return true;
+	protected function addMessage(String $message) {
+		if (isset($_SESSION['LoginView::Message'])) {
+		  $_SESSION['LoginView::Message'] .= $message . '<br>';
 		} else {
-			$this->addMessage('Wrong information in cookies');
-			return false;
+		  $_SESSION['LoginView::Message'] = $message . '<br>';
 		}
 	}
 
@@ -88,13 +60,5 @@ class LoginCtrl {
 	private function getPasswordInput($password) {
 		
 		return strlen($password) <= 0;
-	}
-
-	protected function addMessage(String $message) {
-		if (isset($_SESSION['LoginView::Message'])) {
-		  $_SESSION['LoginView::Message'] .= $message . '<br>';
-		} else {
-		  $_SESSION['LoginView::Message'] = $message . '<br>';
-		}
 	}
 }
