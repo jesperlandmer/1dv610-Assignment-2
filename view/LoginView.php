@@ -71,7 +71,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName(self::$name) . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -89,12 +89,12 @@ class LoginView {
 	* Gets stored username from previous register attempt
 	* @return string, session stored username
 	*/
-	private function getRequestUserName() {
+	private function getRequestUserName($userToCheck) {
 		$usernameToReturn = '';
 
 		if ($this->isRequestUsername()) {
-			$usernameToReturn = $_SESSION[self::$name];
-			unset($_SESSION[self::$name]);
+			$usernameToReturn = $_SESSION[$userToCheck];
+			unset($_SESSION[$userToCheck]);
 		}
 
 		return $usernameToReturn;
@@ -104,8 +104,8 @@ class LoginView {
 	* Check if stored session username
 	* @return boolean
 	*/
-	private function isRequestUsername() {
-		return isset($_SESSION[self::$name]);
+	private function isRequestUsername($userToCheck) {
+		return isset($_SESSION[$userToCheck]);
 	}
 
 }
