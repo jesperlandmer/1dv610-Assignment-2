@@ -19,7 +19,7 @@ class LayoutView {
         <body>
           <h1>Assignment 2</h1>
           ' . $this->renderTopLink($isLoggedIn) . '
-          ' . $this->renderAuthStatus($isLoggedIn) . '
+          ' . $this->generateAuthStatus($isLoggedIn) . '
 
           <div class="container">
               ' . $this->renderFormResponse($isLoggedIn, $v, $r) . '
@@ -33,7 +33,6 @@ class LayoutView {
 
   /**
 	 * Checks if register page or not
-	 *
 	 * @return boolean
 	 */
   private function isRegisterPage() {
@@ -42,7 +41,6 @@ class LayoutView {
 
   /**
 	 * Returns top link in layout
-	 *
 	 * @return string 
 	 */
   private function renderTopLink($isLoggedIn) {
@@ -51,6 +49,10 @@ class LayoutView {
     }
   }
 
+  /**
+	 * Generate HTML code for the top link
+	 * @return string HTML code
+	 */
   private function generateTopLinkHTML() {
     if ($this->isRegisterPage()) {
       return '<a href="?">Back to login</a>';
@@ -61,7 +63,6 @@ class LayoutView {
 
   /**
 	 * Returns the requested page form
-	 *
 	 * @return string HTML code
 	 */
   private function renderFormResponse($isLoggedIn, $v, $r) {
@@ -73,11 +74,10 @@ class LayoutView {
   }
 
   /**
-	 * Returns top status
-	 *
+	 * Generate authorization status HTML code
 	 * @return string HTML code
 	 */
-  private function renderAuthStatus($isLoggedIn) {
+  private function generateAuthStatus($isLoggedIn) {
     if ($isLoggedIn) {
       return '<h2>Logged in</h2>';
     }

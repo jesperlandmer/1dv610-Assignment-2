@@ -12,7 +12,7 @@ class RegisterCtrl extends LoginCtrl {
 	 * @return void
 	 */
 	public function addNewUser(User $user) {
-		$_SESSION['registerUser'] = filter_var($_REQUEST['RegisterView::UserName'], FILTER_SANITIZE_STRING);
+		$_SESSION['RegisterView::UserName'] = filter_var($_REQUEST['RegisterView::UserName'], FILTER_SANITIZE_STRING);
 
 		if ($this->saveUserSuccessful($user)) {
 			parent::setCookie('LoginView::CookieName', $_REQUEST['RegisterView::UserName']);

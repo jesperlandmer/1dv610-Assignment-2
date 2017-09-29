@@ -8,6 +8,7 @@ class RegisterView extends LoginView {
 	private static $registerPassword = 'RegisterView::Password';
 	private static $registerPasswordRepeat = 'RegisterView::PasswordRepeat';
 	private static $registerMessageId = 'RegisterView::Message';
+
 	/**
 	 * Create HTTP response
 	 *
@@ -58,12 +59,15 @@ class RegisterView extends LoginView {
 		';
 	}
 
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
+	/**
+	* Gets stored username from previous register attempt
+	* @return string, session stored username
+	*/
 	private function getRequestUserName() {
 		$username = '';
-		if (isset($_SESSION['registerUser'])) {
-			$username = $_SESSION['registerUser'];
-			unset($_SESSION['registerUser']);
+		if (isset($_SESSION[self::$registerName])) {
+			$username = $_SESSION[self::$registerName];
+			unset($_SESSION[self::$registerName]);
 			return $username;
 		}
 	}
