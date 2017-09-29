@@ -89,12 +89,12 @@ class LoginView {
 	* Gets stored username from previous register attempt
 	* @return string, session stored username
 	*/
-	private function getRequestUserName($userToCheck) {
+	protected function getRequestUserName($storedUserName) {
 		$usernameToReturn = '';
 
-		if ($this->isRequestUsername($userToCheck)) {
-			$usernameToReturn = $_SESSION[$userToCheck];
-			unset($_SESSION[$userToCheck]);
+		if ($this->isRequestUsername($storedUserName)) {
+			$usernameToReturn = $_SESSION[$storedUserName];
+			unset($_SESSION[$storedUserName]);
 		}
 
 		return $usernameToReturn;
