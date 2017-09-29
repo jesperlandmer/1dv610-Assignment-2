@@ -88,9 +88,9 @@ class LoginView {
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	private function getRequestUserName() {
 		$username = '';
-		if (isset($_SESSION['LoginView::LoginName'])) {
-			$username = $_SESSION['LoginView::LoginName'];
-			unset($_SESSION['LoginView::LoginName']);
+		if (isset($_SESSION['loginUser'])) {
+			$username = $_SESSION['loginUser'];
+			unset($_SESSION['loginUser']);
 			return $username;
 		}
 	}
