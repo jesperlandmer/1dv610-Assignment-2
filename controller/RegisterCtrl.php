@@ -8,7 +8,7 @@ class RegisterCtrl extends LoginCtrl {
 	private $password;
 	private $passwordRepeat;
 	private $messageType = array(
-		"registered" => "Username is missing",
+		"registered" => "Registered new user.",
 	);
 
 	/**
@@ -19,19 +19,21 @@ class RegisterCtrl extends LoginCtrl {
 	 * @return void
 	 */
 	public function addNewUser(User $user) {
-
-		$this->username = $_REQUEST['RegisterView::UserName'];
-		$this->password = $_REQUEST['RegisterView::Password'];
-		$this->passwordRepeat = $_REQUEST['RegisterView::PasswordRepeat'];
+		$this->setCredentials();
 		$this->filterUserName();
 
 		if ($this->saveUserSuccessful($user)) {
 			$this->setLoginUsername();
 			parent::addMessage($this->messageType['registered']);
-			$_SESSION['LoginView::Message'] = 'Registered new user.';
 			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]));
 			exit();
 		}
+	}
+
+	private function setCredentials() {
+		$this->username = $_REQUEST['RegisterView::UserName'];
+		$this->password = $_REQUEST['RegisterView::Password'];
+		$this->passwordRepeat = $_REQUEST['RegisterView::PasswordRepeat'];
 	}
 
 	private function saveUserSuccessful($user) {
