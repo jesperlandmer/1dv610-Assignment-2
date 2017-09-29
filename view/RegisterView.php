@@ -41,7 +41,7 @@ class RegisterView extends LoginView {
 					<p id="' . self::$registerMessageId . '">' . $message . '</p>
 			
 					<label for="' . self::$registerName . '">Username :</label>
-					<input type="text" size="20" name="' . self::$registerName . '" id="' . self::$registerName . '" value="' . parent::getRequestUserName() .'">
+					<input type="text" size="20" name="' . self::$registerName . '" id="' . self::$registerName . '" value="' . parent::getRequestUserName(self::$registerName) .'">
 					<br>
 			
 					<label for="' . self::$registerPassword . '">Password  :</label>
