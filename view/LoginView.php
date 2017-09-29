@@ -88,7 +88,11 @@ class LoginView {
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	private function getRequestUserName() {
 		$username = '';
-		if (isset($_SESSION['loginUser'])) {
+		if (isset($_COOKIE[self::$cookieName])) {
+			$username = $_COOKIE[self::$cookieName];
+			setcookie(self::$cookieName, '', time() - 3600);
+			return $username;
+		} else if (isset($_SESSION['loginUser'])) {
 			$username = $_SESSION['loginUser'];
 			unset($_SESSION['loginUser']);
 			return $username;
